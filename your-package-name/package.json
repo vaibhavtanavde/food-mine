@@ -1,0 +1,14 @@
+{
+    "name": "your-package-name",
+    "version": "1.0.0",
+    "description": "Description of your package",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.18.2"
+    }
+}
