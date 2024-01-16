@@ -7,6 +7,9 @@ import foodRouter from './routers/food.router';
 import userRouter from './routers/user.router';
 import orderRouter from './routers/order.router';
 import { dbConnect } from './configs/database.config';
+dotenv.config({
+    path: path.resolve(__dirname, '../.env'),
+  })
 dbConnect();
 
 const app = express();
