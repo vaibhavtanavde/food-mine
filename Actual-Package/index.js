@@ -57,21 +57,66 @@ function analyzeTsFile(filePath, result) {
   const sourceFile = project.addSourceFileAtPath(filePath);
 
   const classes = sourceFile.getClasses();
-  result.ts.push({ filePath, classes: classes.map(c => c.getName()) });
+  const functions = sourceFile.getFunctions();
+
+  result.ts.push({
+    filePath,
+    classes: classes.map(c => c.getName()),
+    functions: functions.map(f => f.getName()),
+  });
 }
+
+// ...
 
 function analyzeJsFile(filePath, result) {
   const jsCode = fs.readFileSync(filePath, 'utf-8');
   const jsAst = esprima.parseScript(jsCode, { loc: true });
 
-  const functionNames = [];
+  const classes = [];
+  const functions = [];
+
   traverse(jsAst, {
+    ClassDeclaration(node) {
+      classes.push(node.id.name);
+    },
     FunctionDeclaration(node) {
-      functionNames.push(node.id.name);
+      functions.push(node.id.name);
     },
   });
 
-  result.js.push({ filePath, functionNames });
+  result.js.push({ filePath, classes, functions });
+}
+
+// Helper function to log information to the browser console
+function logToConsole(info) {
+  if (typeof console !== 'undefined' && typeof console.log === 'function') {
+    console.log('Function Call:', info.functionName);
+    console.log('Parameters:', info.parameters);
+    console.log('Location:', info.location);
+    console.log('------------------------');
+  }
+}
+
+// Helper function to get the name of a function from its AST node
+function getFunctionName(callee) {
+  if (callee.type === 'Identifier') {
+    return callee.name;
+  } else if (callee.type === 'MemberExpression') {
+    return getFunctionName(callee.property);
+  } else {
+    return null; // Handle other cases as needed
+  }
+}
+
+// Helper function to extract parameter values from AST nodes
+function extractParameterValue(arg) {
+  if (arg.type === 'Literal') {
+    return arg.value;
+  } else if (arg.type === 'Identifier') {
+    return arg.name;
+  } else {
+    return null; // Handle other cases as needed
+  }
 }
 
 function analyzeHtmlFile(filePath, result) {
@@ -94,28 +139,54 @@ function formatContent(result, baseFolderPath, exampleSpecPath) {
 
   const exampleSpecContent = fs.readFileSync(exampleSpecPath, 'utf8');
 
-  // Display TypeScript classes
-  result.ts.forEach(({ filePath, classes }) => {
+  // Display TypeScript classes and functions
+  result.ts.forEach(({ filePath, classes, functions }) => {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     formattedContent += `<div class="file-container"><h2>${filePath}</h2>\n`;
     formattedContent += `<div class="tooltip"><pre class="tooltiptext">${exampleSpecContent}</pre>\n<pre>${fileContent}</pre></div><br>`;
-    formattedContent += `<h3>Classes:</h3><ul>`;
-    classes.forEach(className => {
-      formattedContent += `<li>${className}</li>`;
-    });
-    formattedContent += `</ul></div><hr>`;
+
+    if (classes.length > 0) {
+      formattedContent += `<h3>Classes:</h3><ul>`;
+      classes.forEach(className => {
+        formattedContent += `<li>${className}</li>`;
+      });
+      formattedContent += `</ul>`;
+    }
+
+    if (functions.length > 0) {
+      formattedContent += `<h3>Functions:</h3><ul>`;
+      functions.forEach(func => {
+        formattedContent += `<li>${func}</li>`;
+      });
+      formattedContent += `</ul>`;
+    }
+
+    formattedContent += `</div><hr>`;
   });
 
-  // Display JavaScript functions
-  result.js.forEach(({ filePath, functionNames }) => {
+  // Display JavaScript classes and functions
+  result.js.forEach(({ filePath, classes, functions }) => {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     formattedContent += `<div class="file-container"><h2>${filePath}</h2>\n`;
     formattedContent += `<div class="tooltip"><pre class="tooltiptext">${exampleSpecContent}</pre>\n<pre>${fileContent}</pre></div><br>`;
-    formattedContent += `<h3>Functions:</h3><ul>`;
-    functionNames.forEach(functionName => {
-      formattedContent += `<li>${functionName}</li>`;
-    });
-    formattedContent += `</ul></div><hr>`;
+
+    if (classes.length > 0) {
+      formattedContent += `<h3>Classes:</h3><ul>`;
+      classes.forEach(className => {
+        formattedContent += `<li>${className}</li>`;
+      });
+      formattedContent += `</ul>`;
+    }
+
+    if (functions.length > 0) {
+      formattedContent += `<h3>Functions:</h3><ul>`;
+      functions.forEach(func => {
+        formattedContent += `<li>${func}</li>`;
+      });
+      formattedContent += `</ul>`;
+    }
+
+    formattedContent += `</div><hr>`;
   });
 
   // Display HTML elements
@@ -137,6 +208,7 @@ function startServer(baseFolderPath, exampleSpecPath) {
 
   app.use('/html', express.static(path.join(baseFolderPath, '**/*.html')));
   app.use('/ts', express.static(path.join(baseFolderPath, '**/*.ts')));
+  app.use('/js', express.static(path.join(baseFolderPath, '**/*.js')));
 
   app.get('/', (req, res) => {
     const result = { ts: [], js: [], html: [] };
