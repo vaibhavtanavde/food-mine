@@ -20,7 +20,7 @@ describe('Login', function() {
 describe('Register', function() {
   it('Register Page', function() {
     element(by.css('input[placeholder="Name"]')).sendKeys("Vaibhav T");
-    element(by.css('input[placeholder="Email"]')).sendKeys("vaibhav2@gmail.com");
+    element(by.css('input[placeholder="Email"]')).sendKeys("vaibhav3@gmail.com");
     element(by.css('input[placeholder="Password"]')).sendKeys("12345");
     element(by.css('input[placeholder="Confirm Password"]')).sendKeys("12345");
     element(by.css('input[placeholder="Address"]')).sendKeys("Spiegelgraben 37 96052 Bamberg");

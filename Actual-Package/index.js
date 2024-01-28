@@ -57,34 +57,32 @@ function analyzeTsFile(filePath, result) {
   const sourceFile = project.addSourceFileAtPath(filePath);
 
   const classes = sourceFile.getClasses();
-  const functions = sourceFile.getFunctions();
-
-  result.ts.push({
-    filePath,
-    classes: classes.map(c => c.getName()),
-    functions: functions.map(f => f.getName()),
-  });
+  result.ts.push({ filePath, classes: classes.map(c => c.getName()) });
 }
-
-// ...
 
 function analyzeJsFile(filePath, result) {
   const jsCode = fs.readFileSync(filePath, 'utf-8');
   const jsAst = esprima.parseScript(jsCode, { loc: true });
 
-  const classes = [];
-  const functions = [];
+  const functionCalls = [];
 
   traverse(jsAst, {
-    ClassDeclaration(node) {
-      classes.push(node.id.name);
-    },
-    FunctionDeclaration(node) {
-      functions.push(node.id.name);
+    CallExpression(node) {
+      const functionName = getFunctionName(node.callee);
+      const location = node.loc.start;
+
+      // Extracting information about function calls and their parameters
+      const parameters = node.arguments.map(arg => extractParameterValue(arg));
+
+      const functionCallInfo = { functionName, parameters, location };
+      functionCalls.push(functionCallInfo);
+
+      // Log the information to the browser console
+      logToConsole(functionCallInfo);
     },
   });
 
-  result.js.push({ filePath, classes, functions });
+  result.js.push({ filePath, functionCalls });
 }
 
 // Helper function to log information to the browser console
@@ -119,6 +117,7 @@ function extractParameterValue(arg) {
   }
 }
 
+
 function analyzeHtmlFile(filePath, result) {
   const htmlCode = fs.readFileSync(filePath, 'utf-8');
   const $ = cheerio.load(htmlCode);
@@ -139,54 +138,28 @@ function formatContent(result, baseFolderPath, exampleSpecPath) {
 
   const exampleSpecContent = fs.readFileSync(exampleSpecPath, 'utf8');
 
-  // Display TypeScript classes and functions
-  result.ts.forEach(({ filePath, classes, functions }) => {
+  // Display TypeScript classes
+  result.ts.forEach(({ filePath, classes }) => {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     formattedContent += `<div class="file-container"><h2>${filePath}</h2>\n`;
     formattedContent += `<div class="tooltip"><pre class="tooltiptext">${exampleSpecContent}</pre>\n<pre>${fileContent}</pre></div><br>`;
-
-    if (classes.length > 0) {
-      formattedContent += `<h3>Classes:</h3><ul>`;
-      classes.forEach(className => {
-        formattedContent += `<li>${className}</li>`;
-      });
-      formattedContent += `</ul>`;
-    }
-
-    if (functions.length > 0) {
-      formattedContent += `<h3>Functions:</h3><ul>`;
-      functions.forEach(func => {
-        formattedContent += `<li>${func}</li>`;
-      });
-      formattedContent += `</ul>`;
-    }
-
-    formattedContent += `</div><hr>`;
+    formattedContent += `<h3>Classes:</h3><ul>`;
+    classes.forEach(className => {
+      formattedContent += `<li>${className}</li>`;
+    });
+    formattedContent += `</ul></div><hr>`;
   });
 
-  // Display JavaScript classes and functions
-  result.js.forEach(({ filePath, classes, functions }) => {
+  // Display JavaScript functions
+  result.js.forEach(({ filePath, functionCalls }) => {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     formattedContent += `<div class="file-container"><h2>${filePath}</h2>\n`;
     formattedContent += `<div class="tooltip"><pre class="tooltiptext">${exampleSpecContent}</pre>\n<pre>${fileContent}</pre></div><br>`;
-
-    if (classes.length > 0) {
-      formattedContent += `<h3>Classes:</h3><ul>`;
-      classes.forEach(className => {
-        formattedContent += `<li>${className}</li>`;
-      });
-      formattedContent += `</ul>`;
-    }
-
-    if (functions.length > 0) {
-      formattedContent += `<h3>Functions:</h3><ul>`;
-      functions.forEach(func => {
-        formattedContent += `<li>${func}</li>`;
-      });
-      formattedContent += `</ul>`;
-    }
-
-    formattedContent += `</div><hr>`;
+    formattedContent += `<h3>Function Calls:</h3><ul>`;
+    functionCalls.forEach(call => {
+      formattedContent += `<li>${call.functionName}(${call.parameters.join(', ')}) at line ${call.location.line}, column ${call.location.column}</li>`;
+    });
+    formattedContent += `</ul></div><hr>`;
   });
 
   // Display HTML elements
@@ -201,14 +174,12 @@ function formatContent(result, baseFolderPath, exampleSpecPath) {
   return formattedContent;
 }
 
-
 function startServer(baseFolderPath, exampleSpecPath) {
   const app = express();
   const port = 3000;
 
   app.use('/html', express.static(path.join(baseFolderPath, '**/*.html')));
   app.use('/ts', express.static(path.join(baseFolderPath, '**/*.ts')));
-  app.use('/js', express.static(path.join(baseFolderPath, '**/*.js')));
 
   app.get('/', (req, res) => {
     const result = { ts: [], js: [], html: [] };
