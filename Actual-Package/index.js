@@ -131,7 +131,7 @@ function formatContent(result, baseFolderPath, exampleSpecPath) {
   formattedContent += '<style>';
   formattedContent += '.file-container { margin-bottom: 20px; }';
   formattedContent += '.tooltip { position: relative; display: inline-block; }';
-  formattedContent += '.tooltip .tooltiptext { visibility: hidden; width: auto; background-color: #555; color: #fff; text-align: left; border-radius: 6px; padding: 5px; position: absolute; z-index: 1; top: 0; left: 100%; margin-left: 10px; opacity: 0; transition: opacity 0.3s; }';
+  formattedContent += '.tooltip .tooltiptext { visibility: hidden; width: auto; background-color: #555; color: #fff; text-align: left; border-radius: 6px; padding: 5px; position: absolute; z-index: 1; opacity: 0; transition: opacity 0.3s; white-space: pre-line; }';
   formattedContent += '.tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }';
   formattedContent += '</style>';
   formattedContent += '</head><body>';
@@ -140,9 +140,13 @@ function formatContent(result, baseFolderPath, exampleSpecPath) {
 
   // Display TypeScript classes
   result.ts.forEach(({ filePath, classes }) => {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const fileContent = fs.readFileSync(filePath, 'utf8').split('\n');
     formattedContent += `<div class="file-container"><h2>${filePath}</h2>\n`;
-    formattedContent += `<div class="tooltip"><pre class="tooltiptext">${exampleSpecContent}</pre>\n<pre>${fileContent}</pre></div><br>`;
+    formattedContent += `<pre><code>`;
+    fileContent.forEach((line, index) => {
+      formattedContent += `<div class="tooltip" onmousemove="moveTooltip(event)"><span>${line}</span><span class="tooltiptext">${exampleSpecContent}</span></div>\n`;
+    });
+    formattedContent += `</code></pre>`;
     formattedContent += `<h3>Classes:</h3><ul>`;
     classes.forEach(className => {
       formattedContent += `<li>${className}</li>`;
@@ -150,29 +154,19 @@ function formatContent(result, baseFolderPath, exampleSpecPath) {
     formattedContent += `</ul></div><hr>`;
   });
 
-  // Display JavaScript functions
-  result.js.forEach(({ filePath, functionCalls }) => {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    formattedContent += `<div class="file-container"><h2>${filePath}</h2>\n`;
-    formattedContent += `<div class="tooltip"><pre class="tooltiptext">${exampleSpecContent}</pre>\n<pre>${fileContent}</pre></div><br>`;
-    formattedContent += `<h3>Function Calls:</h3><ul>`;
-    functionCalls.forEach(call => {
-      formattedContent += `<li>${call.functionName}(${call.parameters.join(', ')}) at line ${call.location.line}, column ${call.location.column}</li>`;
-    });
-    formattedContent += `</ul></div><hr>`;
-  });
-
-  // Display HTML elements
-  result.html.forEach(({ filePath, elementCount }) => {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    formattedContent += `<div class="file-container"><h2>${filePath}</h2>\n`;
-    formattedContent += `<div class="tooltip"><pre class="tooltiptext">${exampleSpecContent}</pre>\n<pre>${fileContent}</pre></div><br>`;
-    formattedContent += `<h3>Element Count:</h3><p>${elementCount}</p></div><hr>`;
-  });
+  // JavaScript to move tooltip
+  formattedContent += `<script>
+  function moveTooltip(event) {
+    const tooltip = event.target.querySelector('.tooltiptext');
+    tooltip.style.left = (event.pageX + 30) + 'px'; // Adjust the offset as needed
+    tooltip.style.top = (event.pageY - 30) + 'px'; // Adjust the offset as needed
+  }
+  </script>`;
 
   formattedContent += '</body></html>';
   return formattedContent;
 }
+
 
 function startServer(baseFolderPath, exampleSpecPath) {
   const app = express();

@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "isparta": "^4.1.1",
+    "istanbul": "^0.4.5",
+    "istanbul-lib-coverage": "^3.2.2",
+    "jasmine": "^5.1.0",
+    "jasmine-core": "^5.1.2",
+    "jasmine-spec-reporter": "^7.0.0",
+    "karma": "^6.4.2",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-coverage-istanbul-reporter": "^3.0.3",
+    "karma-jasmine": "^5.1.0",
+    "karma-ng-html2js-preprocessor": "^1.0.0",
+    "protractor-istanbul-plugin": "^2.0.0",
+    "remap-istanbul": "^0.13.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2"
+  }
+}

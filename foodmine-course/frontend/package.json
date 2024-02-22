@@ -25,10 +25,12 @@
     "ngx-toastr": "^17.0.2",
     "rxjs": "~7.8.1",
     "tslib": "^2.5.0",
-    "zone.js": "~0.13.0",
-    "typescript": "~5.0.4"
+    "typescript": "~5.0.4",
+    "zone.js": "~0.13.0"
   },
   "devDependencies": {
-
+    "jasmine": "^5.1.0",
+    "nyc": "^15.1.0",
+    "protractor": "^7.0.0"
   }
 }
