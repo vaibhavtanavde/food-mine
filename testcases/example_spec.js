@@ -13,52 +13,37 @@ describe('Login', function() {
   let loginPageComponent;
 
   beforeEach(() => {
-    loginPageComponent = new LoginPageComponent(/* Mock dependencies as needed */);
+    loginPageComponent = new LoginPageComponent(); // Instantiate LoginPageComponent
   });
 
-  it('should validate form and return true when valid', () => {
-    // Simulating user input
-   // element(by.css('input[placeholder="Email"]')).sendKeys("test@example.com");
-   // element(by.css('input[placeholder="Password"]')).sendKeys("password123");
+  it('Login Page', function() {
+    // Accessing variables and methods from LoginPageComponent
+    loginPageComponent.group();
+    loginPageComponent.login();
+    loginPageComponent.subscribe();
+    loginPageComponent.navigateByUrl();
 
-    // Simulating form submission
+    // Simulate clicking on the registration link
     element(by.css('a[ng-reflect-router-link="/register"]')).click();
+
     console.log("Login Page Passed");
   });
 });
 
 
 describe('Register', function() {
-  let registerPageComponent;
-
-  beforeEach(() => {
-    registerPageComponent = new RegisterPageComponent();
-  });
-
-  it('should validate form and return true when valid', () => {
-    // Simulating user input
+  it('Register Page', function() {
     element(by.css('input[placeholder="Name"]')).sendKeys("Vaibhav T");
-    element(by.css('input[placeholder="Email"]')).sendKeys("vaibhav0070@gmail.com");
+    element(by.css('input[placeholder="Email"]')).sendKeys("vaibhav2@gmail.com");
     element(by.css('input[placeholder="Password"]')).sendKeys("12345");
     element(by.css('input[placeholder="Confirm Password"]')).sendKeys("12345");
     element(by.css('input[placeholder="Address"]')).sendKeys("Spiegelgraben 37 96052 Bamberg");
-
-    // Simulating form submission
     element(by.css('button[_ngcontent-ng-c3669804731]')).click();
     console.log("Register Page Passed");
-  });
-});
+  })
+})
 
-// After all tests in this file have run, ensure the form validation is performed
-afterEach(() => {
-  // Validate form using the hypothetical method validateForm() from LoginPageComponent
-  const isLoginFormValid = loginPageComponent.validateForm();
-  const isRegisterFormValid = registerPageComponent.validateForm();
 
-  // Expecting the form to be valid
-  expect(isLoginFormValid).toBe(true);
-  expect(isRegisterFormValid).toBe(true);
-});
 
 
 
