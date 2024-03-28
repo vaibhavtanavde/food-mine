@@ -1,0 +1,13 @@
+function calculateSum(a, b) {
+  return a + b;
+}
+
+describe('Calculate Sum Function', () => {
+  it('should calculate the sum of two numbers correctly', () => {
+    const num1 = 5;
+    const num2 = 10;
+    const expectedResult = 15;
+    const actualResult = calculateSum(num1, num2);
+    expect(actualResult).toBe(expectedResult);
+  });
+});

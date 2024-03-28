@@ -1,0 +1,11 @@
+const { add } = require('./mathFunctions');
+
+test('add function should correctly add two numbers', () => {
+
+  const num1 = 5;
+  const num2 = 10;
+
+  const result = add(num1, num2);
+
+  expect(result).toBe(15);
+});
