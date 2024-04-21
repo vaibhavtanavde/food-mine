@@ -14,15 +14,17 @@
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "^5.1.0",
     "karma-ng-html2js-preprocessor": "^1.0.0",
+    "protractor-html-reporter-2": "^1.0.4",
     "protractor-istanbul-plugin": "^2.0.0",
+    "protractor-jasmine2-html-reporter": "^0.0.7",
     "remap-istanbul": "^0.13.0",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "electron": "^29.1.4",
     "express": "^4.19.1",
     "graphviz": "^0.0.9",
-    "opn": "^6.0.0",
-    "ts-node": "^10.9.2"
+    "opn": "^6.0.0"
   }
 }

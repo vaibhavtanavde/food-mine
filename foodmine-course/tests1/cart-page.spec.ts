@@ -9,13 +9,14 @@ describe('CartPageComponent', () => {
   it('should remove item from cart', async () => {
     element(by.css('img[src="assets/food-1.jpg"]')).click();
     browser.sleep(2000);
-    element(by.css('button[_ngcontent-ng-c3903630442]')).click();   //add to cart
-    
-    const removeButton = element(by.css('button[_ngcontent-ng-c4187611182]'));
-    removeButton.click();
+    const addToCart= element(by.css('button[_ngcontent-ng-c3903630442]'));   //add to cart
+    addToCart.click()
+    const removeFromCart = element(by.css('button[_ngcontent-ng-c4187611182]'));
+    removeFromCart.click();
     
     browser.sleep(2000);
     element(by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
+    expect(browser.getCurrentUrl()).toContain('http://localhost:4200/');
     console.log("Cart Page Test Passed");
   });
 

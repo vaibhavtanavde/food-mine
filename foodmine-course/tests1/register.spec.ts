@@ -4,6 +4,7 @@ describe('RegisterPageComponent', () => {
   beforeEach(() => {
     browser.get('http://localhost:4200/register');
     browser.sleep(2000);
+    browser.manage().window().maximize();
   });
 
   it('should display register form elements', () => {
@@ -24,7 +25,7 @@ describe('RegisterPageComponent', () => {
     const submitButton = element(by.css('button[type="submit"]'));
 
     nameInput.sendKeys('John Doe');
-    emailInput.sendKeys('john@example.com');
+    emailInput.sendKeys('john007@example.com');
     passwordInput.sendKeys('password');
     confirmPasswordInput.sendKeys('password');
     addressInput.sendKeys('123 Street, City');

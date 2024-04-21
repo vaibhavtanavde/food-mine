@@ -1,0 +1,23 @@
+// Function to add two numbers
+function add(a, b) {
+    return a + b;
+}
+
+// Function to subtract two numbers
+function subtract(a, b) {
+    return a - b;
+}
+
+// Test function for add and subtract using LCBA approach
+function test_operations() {
+    // Test add function
+    let result = add(3, 5);
+    console.assert(result === 8, 'Test add Failed');
+
+    // Test subtract function
+    result = subtract(10, 5);
+    console.assert(result === 5, 'Test subtract Failed');
+}
+
+// Run the test function
+test_operations();

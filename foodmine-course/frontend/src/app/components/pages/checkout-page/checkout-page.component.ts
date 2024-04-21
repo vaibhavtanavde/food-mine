@@ -1,3 +1,4 @@
+//checkout-page.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -45,7 +46,7 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     if(!this.order.addressLatLng){
-      this.toastrService.warning('Please select your location on the map', 'Location');
+      this.toastrService.warning('Please select your location on the map', 'Location',{disableTimeOut:true});
       return;
     }
 
