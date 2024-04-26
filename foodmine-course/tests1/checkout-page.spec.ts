@@ -3,10 +3,10 @@ import { browser, by, element, ExpectedConditions as EC } from 'protractor';
 
 describe('CheckoutPageComponent', () => {
   beforeEach(() => {
-    browser.sleep(2000); // Assuming '/checkout' is the route for checkout page
+    browser.sleep(2000); 
   });
 
-  it('should initialize component with default values', async () => {
+  it('should add item to cart & check payment details', async () => {
     element(by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
     element(by.css('img[src="assets/food-1.jpg"]')).click();
     browser.sleep(2000);
@@ -36,18 +36,17 @@ describe('CheckoutPageComponent', () => {
 
   });
 
-  it('should create order on valid form submission', async () => {
+  it('should create order & navigate to payment page', async () => {
     const mapElement = element(by.className('leaflet-container'));
     await mapElement.click();
     browser.sleep(2000);
     
     const createOrder = element(by.css('button[_ngcontent-ng-c1064162151]'));
-    // Click create order button
     await createOrder.click();
     browser.sleep(2000);
     
     // Wait for navigation to payment page
-    await browser.wait(EC.urlContains('/payment'), 5000);
+    await browser.wait(EC.urlContains('/payment'), 10000);
 
     // Assert the URL is correct
     expect(await browser.getCurrentUrl()).toContain('/payment');

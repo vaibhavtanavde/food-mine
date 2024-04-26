@@ -46,7 +46,7 @@ describe('FoodPageComponent', function () {
             return [2 /*return*/];
         });
     }); });
-    it('should add food to cart', function () {
+    it('should add item to cart', function () {
         (0, protractor_1.element)(protractor_1.by.css('img[src="assets/food-1.jpg"]')).click();
         protractor_1.browser.sleep(2000);
         var addToCart = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3903630442]'));

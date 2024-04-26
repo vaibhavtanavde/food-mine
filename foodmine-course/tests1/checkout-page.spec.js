@@ -1,5 +1,4 @@
 "use strict";
-//checkout-page.spec.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,16 +36,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+//checkout-page.spec.ts
 var protractor_1 = require("protractor");
 describe('CheckoutPageComponent', function () {
     beforeEach(function () {
-        protractor_1.browser.sleep(2000); // Assuming '/checkout' is the route for checkout page
+        protractor_1.browser.sleep(2000);
     });
-    it('should initialize component with default values', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var nameInput, addressInput, _a, _b;
+    it('should add item to cart & check payment details', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var addToCart, nameInput, addressInput, _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
+                    (0, protractor_1.element)(protractor_1.by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
+                    (0, protractor_1.element)(protractor_1.by.css('img[src="assets/food-1.jpg"]')).click();
+                    protractor_1.browser.sleep(2000);
+                    addToCart = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3903630442]'));
+                    addToCart.click();
                     (0, protractor_1.element)(protractor_1.by.css('a[ng-reflect-router-link="/checkout"]')).click(); // Proceed to Cart button
                     protractor_1.browser.sleep(2000);
                     nameInput = (0, protractor_1.element)(protractor_1.by.css('input[placeholder="Name"]'));
@@ -88,7 +93,7 @@ describe('CheckoutPageComponent', function () {
             }
         });
     }); });
-    it('should create order on valid form submission', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('should create order & navigate to payment page', function () { return __awaiter(void 0, void 0, void 0, function () {
         var mapElement, createOrder, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
@@ -106,7 +111,7 @@ describe('CheckoutPageComponent', function () {
                     _b.sent();
                     protractor_1.browser.sleep(2000);
                     // Wait for navigation to payment page
-                    return [4 /*yield*/, protractor_1.browser.wait(protractor_1.ExpectedConditions.urlContains('/payment'), 5000)];
+                    return [4 /*yield*/, protractor_1.browser.wait(protractor_1.ExpectedConditions.urlContains('/payment'), 10000)];
                 case 3:
                     // Wait for navigation to payment page
                     _b.sent();

@@ -23,7 +23,7 @@ describe('RegisterPageComponent', function () {
         var addressInput = (0, protractor_1.element)(protractor_1.by.css('input[placeholder="Address"]'));
         var submitButton = (0, protractor_1.element)(protractor_1.by.css('button[type="submit"]'));
         nameInput.sendKeys('John Doe');
-        emailInput.sendKeys('john000700@example.com');
+        emailInput.sendKeys('john01600@example.com');
         passwordInput.sendKeys('password');
         confirmPasswordInput.sendKeys('password');
         addressInput.sendKeys('123 Street, City');

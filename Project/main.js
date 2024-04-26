@@ -184,24 +184,8 @@ function extractItems(filePath) {
 function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQuery) {
     const graph = digraph('G');
 
-    // Add HTML file names as nodes
-    sourceFilePaths.forEach(sourceFilePath => {
-        const sourceFileName = path.basename(sourceFilePath);
-        const htmlFilePath = sourceFilePath.replace('.ts', '.html');
-
-        if (fs.existsSync(htmlFilePath) && sourceFileName.includes(searchQuery)) {
-            const htmlFileName = path.basename(htmlFilePath);
-            graph.addNode(htmlFileName);
-        }
-    });
-
-    // Add test file names as nodes
-    testFilePaths.forEach(testFilePath => {
-        const testFileName = path.basename(testFilePath);
-        if (testFileName.includes(searchQuery)) {
-            graph.addNode(testFileName);
-        }
-    });
+    // Initialize sets to keep track of files with dependencies
+    const filesWithDependencies = new Set();
 
     // Add edges from TypeScript files to HTML files based on references
     sourceFilePaths.forEach(sourceFilePath => {
@@ -223,7 +207,9 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                     const htmlFileContent = fs.readFileSync(htmlFilePath, 'utf-8');
 
                     if (htmlFileContent.includes(func) && testFileContent.includes(func)) {
-                        graph.addNode(testFileName);
+                        filesWithDependencies.add(htmlFileName);
+                        filesWithDependencies.add(testFileName);
+
                         graph.addEdge(sourceFileName, htmlFileName, { label: func, color: 'red' });
                         graph.addEdge(htmlFileName, testFileName, { label: func, color: 'blue' });
                     }
@@ -242,7 +228,9 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                     const htmlFileContent = fs.readFileSync(htmlFilePath, 'utf-8');
 
                     if (htmlFileContent.includes(cls) && testFileContent.includes(cls)) {
-                        graph.addNode(testFileName);
+                        filesWithDependencies.add(htmlFileName);
+                        filesWithDependencies.add(testFileName);
+
                         graph.addEdge(sourceFileName, htmlFileName, { label: cls, color: 'red' });
                         graph.addEdge(htmlFileName, testFileName, { label: cls, color: 'red' });
                     }
@@ -251,5 +239,11 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
         });
     });
 
+    // Add nodes for files with dependencies
+    filesWithDependencies.forEach(fileName => {
+        graph.addNode(fileName);
+    });
+
     return graph;
 }
+

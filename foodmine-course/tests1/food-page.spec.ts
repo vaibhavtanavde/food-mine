@@ -8,7 +8,7 @@ describe('FoodPageComponent', () => {
     browser.sleep(2000);
   });
 
-  it('Add food to cart', () => {
+  it('should add item to cart', () => {
     
     element(by.css('img[src="assets/food-1.jpg"]')).click();
     browser.sleep(2000);

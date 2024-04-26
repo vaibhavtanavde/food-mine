@@ -41,14 +41,22 @@ describe('CartPageComponent', function () {
     beforeEach(function () {
         protractor_1.browser.sleep(2000);
     });
-    it('should remove item from cart', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var removeButton;
+    it('should add item to cart', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var addToCart;
         return __generator(this, function (_a) {
             (0, protractor_1.element)(protractor_1.by.css('img[src="assets/food-1.jpg"]')).click();
             protractor_1.browser.sleep(2000);
-            (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3903630442]')).click(); //add to cart
-            removeButton = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c4187611182]'));
-            removeButton.click();
+            addToCart = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3903630442]'));
+            addToCart.click();
+            expect(protractor_1.browser.getCurrentUrl()).toContain('http://localhost:4200/cart-page');
+            return [2 /*return*/];
+        });
+    }); });
+    it('should remove item from cart', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var removeFromCart;
+        return __generator(this, function (_a) {
+            removeFromCart = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c4187611182]'));
+            removeFromCart.click();
             protractor_1.browser.sleep(2000);
             (0, protractor_1.element)(protractor_1.by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
             expect(protractor_1.browser.getCurrentUrl()).toContain('http://localhost:4200/');
