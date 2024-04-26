@@ -5,18 +5,45 @@ const { digraph } = require('graphviz');
 const express = require('express');
 const opn = require('opn');
 
-// Function to extract functions from a JavaScript file
-function extractFunctions(filePath) {
+// Function to extract functions and classes from a TypeScript file
+function extractItems(filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
-    const functionRegex = /function\s+([^\s\(]+)/g;
+    const functionRegex = /(?:public|private)?\s+(\w+)\s*\(/g;
+    const classRegex = /(?:class)\s+(\w+)\s+/g;
 
     const functions = [];
+    const classes = [];
     let match;
+
     while ((match = functionRegex.exec(fileContent)) !== null) {
-        functions.push(match[1]);
+        const functionName = match[1];
+        // Exclude 'if' function
+        if (functionName !== 'if') {
+            functions.push(functionName);
+        }
     }
 
-    return functions;
+    while ((match = classRegex.exec(fileContent)) !== null) {
+        classes.push(match[1]);
+    }
+
+    return { functions, classes };
+}
+
+// Function to recursively find all TypeScript files in a directory
+function getAllTypeScriptFiles(dir) {
+    let files = fs.readdirSync(dir);
+    let tsFiles = [];
+    for (let file of files) {
+        let filePath = path.join(dir, file);
+        let stats = fs.statSync(filePath);
+        if (stats.isDirectory()) {
+            tsFiles = tsFiles.concat(getAllTypeScriptFiles(filePath)); // Recursively search subdirectories
+        } else if (file.endsWith('.ts')) {
+            tsFiles.push(filePath); // Add TypeScript file to the list
+        }
+    }
+    return tsFiles;
 }
 
 // Function to analyze the relationship between source code and test files
@@ -24,19 +51,33 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths) {
     const graph = digraph('G');
 
     sourceFilePaths.forEach(sourceFilePath => {
+        const { functions, classes } = extractItems(sourceFilePath);
         const sourceFileName = path.basename(sourceFilePath);
-        const sourceFunctions = extractFunctions(sourceFilePath);
 
         graph.addNode(sourceFileName);
 
-        testFilePaths.forEach(testFilePath => {
-            const testFileName = path.basename(testFilePath);
-            const testFileContent = fs.readFileSync(testFilePath, 'utf-8');
+        // Add linked functions
+        functions.forEach(func => {
+            testFilePaths.forEach(testFilePath => {
+                const testFileName = path.basename(testFilePath);
+                const testFileContent = fs.readFileSync(testFilePath, 'utf-8');
 
-            sourceFunctions.forEach(func => {
                 if (testFileContent.includes(func)) {
                     graph.addNode(testFileName);
-                    graph.addEdge(sourceFileName, testFileName, { label: func });
+                    graph.addEdge(sourceFileName, testFileName, { label: func, color: 'blue' }); // Set function edges to blue
+                }
+            });
+        });
+
+        // Add linked classes
+        classes.forEach(cls => {
+            testFilePaths.forEach(testFilePath => {
+                const testFileName = path.basename(testFilePath);
+                const testFileContent = fs.readFileSync(testFilePath, 'utf-8');
+
+                if (testFileContent.includes(cls)) {
+                    graph.addNode(testFileName);
+                    graph.addEdge(sourceFileName, testFileName, { label: cls, color: 'red' }); // Set class edges to red
                 }
             });
         });
@@ -46,21 +87,19 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths) {
 }
 
 // Directories
-const sourceDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\Project\\src';
-const testDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\Project\\tests';
+const sourceDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\foodmine-course\\frontend\\src\\app\\components\\pages';
+const testDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\foodmine-course\\tests';
 
-const sourceFilePaths = fs.readdirSync(sourceDir)
-    .filter(file => file.endsWith('.js'))
-    .map(file => path.join(sourceDir, file));
-
+// Get all TypeScript files in source directory and test directory
+const sourceFilePaths = getAllTypeScriptFiles(sourceDir);
 const testFilePaths = fs.readdirSync(testDir)
-    .filter(file => file.endsWith('.js'))
+    .filter(file => file.endsWith('.spec.ts')) // Assuming test files have ".spec.ts" extension
     .map(file => path.join(testDir, file));
 
 // Analyze the relationships
 const graph = analyzeSourceTestRelationship(sourceFilePaths, testFilePaths);
 
-// Write the graph to a DOT file
+// Output the graph
 const dotFilePath = 'graph.dot';
 graph.output('dot', dotFilePath);
 

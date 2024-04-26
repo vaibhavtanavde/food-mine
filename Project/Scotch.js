@@ -1,18 +1,42 @@
+//Scotch.js
 const fs = require('fs');
 const path = require('path');
 
-// Function to extract functions and variables from a JavaScript file
+// Function to recursively get all TypeScript files from a directory
+function getAllTypeScriptFiles(dir) {
+    let files = fs.readdirSync(dir);
+    let tsFiles = [];
+    for (let file of files) {
+        let filePath = path.join(dir, file);
+        let stats = fs.statSync(filePath);
+        if (stats.isDirectory()) {
+            tsFiles = tsFiles.concat(getAllTypeScriptFiles(filePath)); // Recursively search subdirectories
+        } else if (file.endsWith('.ts')) {
+            tsFiles.push(filePath); // Add TypeScript file to the list
+        }
+    }
+    return tsFiles;
+}
+
+// Function to extract functions and classes from a TypeScript file
 function extractItems(filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
-    const functionRegex = /function\s+([^\s\(]+)/g;
+    const functionRegex = /(?:public|private)?\s+(\w+)\s*\(/g;
+    const classRegex = /(?:class)\s+(\w+)\s+/g;
 
     const functions = [];
+    const classes = [];
     let match;
+
     while ((match = functionRegex.exec(fileContent)) !== null) {
         functions.push(match[1]);
     }
 
-    return { functions };
+    while ((match = classRegex.exec(fileContent)) !== null) {
+        classes.push(match[1]);
+    }
+
+    return { functions, classes };
 }
 
 // Function to analyze the relationship between source code and test files
@@ -20,32 +44,26 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths) {
     const relationshipMap = {};
 
     sourceFilePaths.forEach(sourceFilePath => {
-        const { functions } = extractItems(sourceFilePath);
+        const { functions, classes } = extractItems(sourceFilePath);
 
         const sourceFileName = path.basename(sourceFilePath);
 
-        relationshipMap[sourceFileName] = {
-            linkedTests: [],
-            linkageInfo: []
-        };
+        relationshipMap[sourceFileName] = { functions: [], classes: [] };
 
         testFilePaths.forEach(testFilePath => {
             const testContent = fs.readFileSync(testFilePath, 'utf-8');
 
-            const linkageInfo = [];
-
             functions.forEach(func => {
-                if (testContent.includes(func)) {
-                    if (!relationshipMap[sourceFileName].linkedTests.includes(testFilePath)) {
-                        relationshipMap[sourceFileName].linkedTests.push(testFilePath);
-                    }
-                    linkageInfo.push(`Function/Method: ${func}`);
+                if (func !== 'if' && testContent.includes(func)) {
+                    relationshipMap[sourceFileName].functions.push({ testFile: testFilePath, linkedFunctions: [func] });
                 }
             });
 
-            if (linkageInfo.length > 0) {
-                relationshipMap[sourceFileName].linkageInfo.push({ testFile: testFilePath, linkageInfo });
-            }
+            classes.forEach(cls => {
+                if (testContent.includes(cls)) {
+                    relationshipMap[sourceFileName].classes.push({ testFile: testFilePath, linkedClasses: [cls] });
+                }
+            });
         });
     });
 
@@ -53,15 +71,13 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths) {
 }
 
 // Directories
-const sourceDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\Project\\src';
-const testDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\Project\\tests';
+const sourceDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\foodmine-course\\frontend\\src\\app\\components\\pages';
+const testDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\foodmine-course\\tests';
 
-const sourceFilePaths = fs.readdirSync(sourceDir)
-    .filter(file => file.endsWith('.js'))
-    .map(file => path.join(sourceDir, file));
-
+// Get all TypeScript files in source directory and test directory
+const sourceFilePaths = getAllTypeScriptFiles(sourceDir);
 const testFilePaths = fs.readdirSync(testDir)
-    .filter(file => file.endsWith('.js'))
+    .filter(file => file.endsWith('.spec.ts')) // Assuming test files have ".spec.ts" extension
     .map(file => path.join(testDir, file));
 
 // Analyze the relationships
@@ -71,6 +87,23 @@ const relationshipMap = analyzeSourceTestRelationship(sourceFilePaths, testFileP
 for (const sourceFile in relationshipMap) {
     if (relationshipMap.hasOwnProperty(sourceFile)) {
         console.log(`Linkage information for ${sourceFile}:`);
-        console.log(relationshipMap[sourceFile].linkageInfo);
+
+        if (relationshipMap[sourceFile].functions.length > 0) {
+            console.log('Functions:');
+            relationshipMap[sourceFile].functions.forEach(item => {
+                console.log(`  Test File: ${item.testFile}`);
+                console.log(`  Linked Functions: ${item.linkedFunctions.join(', ')}`);
+                console.log('--------------------------------------');
+            });
+        }
+
+        if (relationshipMap[sourceFile].classes.length > 0) {
+            console.log('Classes:');
+            relationshipMap[sourceFile].classes.forEach(item => {
+                console.log(`  Test File: ${item.testFile}`);
+                console.log(`  Linked Classes: ${item.linkedClasses.join(', ')}`);
+                console.log('--------------------------------------');
+            });
+        }
     }
 }
