@@ -1,4 +1,5 @@
 // Import necessary modules
+//home.spec.ts
 import { browser, by, element } from 'protractor';
 
 describe('HomeComponent', () => {

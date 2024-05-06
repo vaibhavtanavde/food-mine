@@ -36,32 +36,68 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// cart-page.spec.ts
 var protractor_1 = require("protractor");
 describe('CartPageComponent', function () {
     beforeEach(function () {
         protractor_1.browser.sleep(2000);
     });
-    it('should add item to cart', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var addToCart;
+    var addToCart = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var addToCartButton;
         return __generator(this, function (_a) {
-            (0, protractor_1.element)(protractor_1.by.css('img[src="assets/food-1.jpg"]')).click();
-            protractor_1.browser.sleep(2000);
-            addToCart = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3903630442]'));
-            addToCart.click();
-            expect(protractor_1.browser.getCurrentUrl()).toContain('http://localhost:4200/cart-page');
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    addToCartButton = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3903630442]'));
+                    return [4 /*yield*/, addToCartButton.click()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, protractor_1.browser.sleep(2000)];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var removeFromCart = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var removeFromCartButton;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    removeFromCartButton = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c4187611182]'));
+                    return [4 /*yield*/, removeFromCartButton.click()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, protractor_1.browser.sleep(2000)];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    it('should add to cart', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    (0, protractor_1.element)(protractor_1.by.css('img[src="assets/food-1.jpg"]')).click();
+                    return [4 /*yield*/, addToCart()];
+                case 1:
+                    _a.sent();
+                    expect(protractor_1.browser.getCurrentUrl()).toContain('http://localhost:4200/cart-page');
+                    return [2 /*return*/];
+            }
         });
     }); });
-    it('should remove item from cart', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var removeFromCart;
+    it('should remove from cart', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            removeFromCart = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c4187611182]'));
-            removeFromCart.click();
-            protractor_1.browser.sleep(2000);
-            (0, protractor_1.element)(protractor_1.by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
-            expect(protractor_1.browser.getCurrentUrl()).toContain('http://localhost:4200/');
-            console.log("Cart Page Test Passed");
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, removeFromCart()];
+                case 1:
+                    _a.sent();
+                    (0, protractor_1.element)(protractor_1.by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
+                    expect(protractor_1.browser.getCurrentUrl()).toContain('http://localhost:4200/');
+                    console.log("Cart Page Test Passed");
+                    return [2 /*return*/];
+            }
         });
     }); });
 });

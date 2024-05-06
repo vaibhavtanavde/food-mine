@@ -46,7 +46,7 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     if(!this.order.addressLatLng){
-      this.toastrService.warning('Please select your location on the map', 'Location',{disableTimeOut:true});
+      this.toastrService.warning('Please select your location on the map asap', 'Location',{disableTimeOut:true});
       return;
     }
 

@@ -88,7 +88,7 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths) {
 
 // Directories
 const sourceDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\foodmine-course\\frontend\\src\\app\\components\\pages';
-const testDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\foodmine-course\\tests';
+const testDir = 'C:\\Users\\abc\\Desktop\\Germany\\sUBJECTS\\Thesis\\2301\\food-mine\\foodmine-course\\tests1';
 
 // Get all TypeScript files in source directory and test directory
 const sourceFilePaths = getAllTypeScriptFiles(sourceDir);

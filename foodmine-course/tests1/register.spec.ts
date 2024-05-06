@@ -1,3 +1,4 @@
+//register.spec.ts
 import { browser, by, element, ExpectedConditions as EC } from 'protractor';
 
 describe('RegisterPageComponent', () => {
