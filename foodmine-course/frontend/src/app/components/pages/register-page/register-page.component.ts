@@ -42,6 +42,10 @@ export class RegisterPageComponent implements OnInit {
     return this.registerForm.controls;
   }
 
+  private log(message: string) {
+    console.log(message);
+  }
+
   submit(){
     this.isSubmitted = true;
     if(this.registerForm.invalid) return;

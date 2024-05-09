@@ -169,10 +169,11 @@ function extractItems(filePath) {
 
     while ((match = functionRegex.exec(fileContent)) !== null) {
         const functionName = match[1];
-        if (functionName !== 'if') {
+        if (functionName !== 'if' && functionName !== 'log') {
             functions.push(functionName);
         }
     }
+    
 
     while ((match = classRegex.exec(fileContent)) !== null) {
         classes.push(match[1]);
@@ -184,8 +185,9 @@ function extractItems(filePath) {
 function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQuery) {
     const graph = digraph('G');
 
-    // Initialize sets to keep track of files with dependencies
+    // Initialize sets to keep track of files with dependencies and added edges
     const filesWithDependencies = new Set();
+    const addedEdges = new Set();
 
     // Define colors for the lines
     const colors = ['#FF5733', '#33FF57', '#5733FF', '#33FFFF', '#FFFF33']; // You can add more colors as needed
@@ -221,9 +223,13 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                         lineNumbers.forEach(lineNumber => {
                             const testCaseName = getTestCaseName(testFileContent, lineNumber);
                             if (testCaseName) {
-                                console.log(`Function '${func}' referenced in test case: '${testCaseName}' in file: '${testFileName}' at line: ${lineNumber}`);
-                                graph.addNode(`${testFileName}-${testCaseName}`, { shape: 'box', label: testCaseName });
-                                graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted', color: colors[colorIndex] });
+                                const edgeId = `${testFileName}-${testCaseName}`;
+                                if (!addedEdges.has(edgeId)) {
+                                    console.log(`Function '${func}' referenced in test case: '${testCaseName}' in file: '${testFileName}' at line: ${lineNumber}`);
+                                    graph.addNode(`${testFileName}-${testCaseName}`, { shape: 'box', label: testCaseName });
+                                    graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted', color: colors[colorIndex] });
+                                    addedEdges.add(edgeId);
+                                }
                             }
                         });
 
@@ -255,9 +261,13 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                         lineNumbers.forEach(lineNumber => {
                             const testCaseName = getTestCaseName(testFileContent, lineNumber);
                             if (testCaseName) {
-                                console.log(`Class '${cls}' referenced in test case: '${testCaseName}' in file: '${testFileName}' at line: ${lineNumber}`);
-                                graph.addNode(`${testFileName}-${testCaseName}`, { shape: 'box', label: testCaseName });
-                                graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted', color: colors[colorIndex] });
+                                const edgeId = `${testFileName}-${testCaseName}`;
+                                if (!addedEdges.has(edgeId)) {
+                                    console.log(`Class '${cls}' referenced in test case: '${testCaseName}' in file: '${testFileName}' at line: ${lineNumber}`);
+                                    graph.addNode(`${testFileName}-${testCaseName}`, { shape: 'box', label: testCaseName });
+                                    graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted', color: colors[colorIndex] });
+                                    addedEdges.add(edgeId);
+                                }
                             }
                         });
 
@@ -277,6 +287,7 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
 
     return graph;
 }
+
 
 function getAllLineNumbers(fileContent, item) {
     // Find all line numbers of the item in the file content

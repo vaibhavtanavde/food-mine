@@ -39,6 +39,10 @@ export class CheckoutPageComponent implements OnInit {
     return this.checkoutForm.controls;
   }
 
+  private log(message: string) {
+    console.log(message);
+  }
+
   createOrder(){
     if(this.checkoutForm.invalid){
       this.toastrService.warning('Please fill the inputs', 'Invalid Inputs');
