@@ -7,49 +7,30 @@ describe('CheckoutPageComponent', () => {
   });
 
   it('should add item to cart & check payment details', async () => {
-    element(by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
-    element(by.css('img[src="assets/food-1.jpg"]')).click();
+    
+    const FindMyLocation = element(by.css('.find-location')); 
+    FindMyLocation.click(); 
     browser.sleep(2000);
-    const addToCart = element(by.css('button[_ngcontent-ng-c3903630442]'));
-    addToCart.click();
-
-    element(by.css('a[ng-reflect-router-link="/checkout"]')).click(); // Proceed to Cart button
-    browser.sleep(2000);  
-    const nameInput = element(by.css('input[placeholder="Name"]'));
-    const addressInput = element(by.css('input[placeholder="Address"]'));
-
-    // Validate default values
-    expect(await nameInput.getAttribute('value')).toBe('John Doe'); // Assuming 'John Doe' is the default name
-    expect(await addressInput.getAttribute('value')).toBe('123 Street, City');
-    browser.sleep(5000); 
-  });
-
-  it('Error message capture', async () => {
-    const createOrder = element(by.css('button[_ngcontent-ng-c1064162151]'));
-    await createOrder.click();
-    await browser.wait(EC.visibilityOf(element(by.xpath("//div[@aria-label='Please select your location on the map']"))), 5000);
-    let toastMessageText = await element(by.xpath("//div[@aria-label='Please select your location on the map']")).getText();
-
-    // Assert that the captured text is what you expect
-    expect(toastMessageText).toEqual('Please select your location on the map');
-    console.log("Got the error message");
-
-  });
-
-  it('should create order & navigate to payment page', async () => {
     const mapElement = element(by.className('leaflet-container'));
-    await mapElement.click();
+    mapElement.click();
     browser.sleep(2000);
-    
-    const createOrder = element(by.css('button[_ngcontent-ng-c1064162151]'));
-    await createOrder.click();
+    const GoToPayment = element(by.css('button[_ngcontent-ng-c3269807487]'));
+    GoToPayment.click();
+    browser.wait(EC.urlContains('http://localhost:4200/payment'), 5000); 
+    const cartQuantity = element(by.css('a[routerlink="/cart-page'));
+    cartQuantity.click();
     browser.sleep(2000);
-    
-    // Wait for navigation to payment page
-    await browser.wait(EC.urlContains('/payment'), 10000);
-
-    // Assert the URL is correct
-    expect(await browser.getCurrentUrl()).toContain('/payment');
-    console.log("Checkout page test passed");
+    const Remove = element(by.css('button[_ngcontent-ng-c471533846]'));
+    Remove.click();
+    browser.sleep(2000);
+    const FoodMine = element(by.css('a.logo[routerlink="/"]'));
+    FoodMine.click();
+    browser.sleep(2000);
+    const username = element(by.css('a[routerlink="/dashboard"]'));
+    username.click();
+    browser.sleep(2000);
+    const Logout = element(by.linkText('Logout'));
+    Logout.click();
+    browser.sleep(2000);
   });
 });

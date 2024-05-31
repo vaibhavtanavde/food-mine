@@ -13,6 +13,7 @@
     "axios": "^1.6.8",
     "express": "^4.19.2",
     "graphviz": "^0.0.9",
-    "opn": "^6.0.0"
+    "opn": "^6.0.0",
+    "swt_visualization_tool": "^1.0.0"
   }
 }

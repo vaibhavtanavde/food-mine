@@ -13,10 +13,12 @@ exports.config = {
     // Spec patterns are relative to the current working directory when
     // protractor is called.
     specs: [
-      '../foodmine-course/tests1/register.spec.js',
-      '../foodmine-course/tests1/home.spec.js', 
-      '../foodmine-course/tests1/cart-page.spec.js',
+      '../foodmine-course/tests1/login-page.spec.js',
+      '../foodmine-course/tests1/register-page.spec.js',
+      '../foodmine-course/tests1/search-page.spec.js',
+      '../foodmine-course/tests1/home-page.spec.js', 
       '../foodmine-course/tests1/food-page.spec.js',
+      '../foodmine-course/tests1/cart-page.spec.js',
       '../foodmine-course/tests1/checkout-page.spec.js'
     ],
   

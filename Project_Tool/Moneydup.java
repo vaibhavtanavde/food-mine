@@ -16,11 +16,6 @@ class Money {
         return this.fAmount == other.fAmount && this.fCurrency.equals(other.fCurrency);
     }
 }
-class Logger {
-    public static void log() {
-        System.out.println("Source code");
-    }
-}
 
 public class TestMoney {
     private Money f12CHF;
@@ -31,13 +26,10 @@ public class TestMoney {
         f14CHF = new Money(14, "CHF");
     }
     public void testAddition() {
-        Logger.log("Test addition");
         Money result = f12CHF.add(f14CHF); 
         assert result.fAmount == 26; 
     }
     public void testEquality() {
-        Logger.log("Test Equality");
-        Money expected = new Money(12, "CHF"); 
-        assert f12CHF.fCurrency.equals(expected.fCurrency);
+        assert f12CHF.equals(new Money(12, "CHF")); 
     }
 }

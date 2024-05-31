@@ -118,7 +118,7 @@ app.get('/analyze', (req, res) => {
     const testDir = req.query.testDir;
     const searchQuery = req.query.searchQuery || '';
 
-    const outputDir = __dirname; // Assuming the output directory is the same as the directory of the main script
+    const outputDir = __dirname; 
 
     const sourceFilePaths = getAllTypeScriptFiles(sourceDir);
     const testFilePaths = fs.readdirSync(testDir)
@@ -185,20 +185,14 @@ function extractItems(filePath) {
 function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQuery) {
     const graph = digraph('G');
 
-    // Initialize sets to keep track of files with dependencies and added edges
+    
     const filesWithDependencies = new Set();
     const addedEdges = new Set();
 
-    // Define colors for the lines
-    const colors = ['#FF5733', '#33FF57', '#5733FF', '#33FFFF', '#FFFF33']; // You can add more colors as needed
-
-    let colorIndex = 0;
-
-    // Add edges from TypeScript files to HTML files based on references
     sourceFilePaths.forEach(sourceFilePath => {
         const sourceFileName = path.basename(sourceFilePath);
         if (!sourceFileName.includes(searchQuery)) {
-            return; // Skip files not matching the search query
+            return; 
         }
 
         const { functions, classes } = extractItems(sourceFilePath);
@@ -217,7 +211,6 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                         filesWithDependencies.add(htmlFileName);
                         filesWithDependencies.add(testFileName);
 
-                        // Get all line numbers of the function in the test file
                         const lineNumbers = getAllLineNumbers(testFileContent, func);
 
                         lineNumbers.forEach(lineNumber => {
@@ -227,15 +220,14 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                                 if (!addedEdges.has(edgeId)) {
                                     console.log(`Function '${func}' referenced in test case: '${testCaseName}' in file: '${testFileName}' at line: ${lineNumber}`);
                                     graph.addNode(`${testFileName}-${testCaseName}`, { shape: 'box', label: testCaseName });
-                                    graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted', color: colors[colorIndex] });
+                                    graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted' });
                                     addedEdges.add(edgeId);
                                 }
                             }
                         });
 
-                        graph.addEdge(htmlFileName, sourceFileName, { label: func, color: colors[colorIndex] });
-                        graph.addEdge(sourceFileName, testFileName, { label: `${func} (Lines ${lineNumbers.join(', ')})`, color: colors[colorIndex] });
-                        colorIndex = (colorIndex + 1) % colors.length; // Increment color index
+                        graph.addEdge(htmlFileName, sourceFileName, { label: func });
+                        graph.addEdge(sourceFileName, testFileName, { label: `${func} (Lines ${lineNumbers.join(', ')})` });
                     }
                 }
             });
@@ -255,7 +247,6 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                         filesWithDependencies.add(htmlFileName);
                         filesWithDependencies.add(testFileName);
 
-                        // Get all line numbers of the class in the test file
                         const lineNumbers = getAllLineNumbers(testFileContent, cls);
 
                         lineNumbers.forEach(lineNumber => {
@@ -265,22 +256,20 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
                                 if (!addedEdges.has(edgeId)) {
                                     console.log(`Class '${cls}' referenced in test case: '${testCaseName}' in file: '${testFileName}' at line: ${lineNumber}`);
                                     graph.addNode(`${testFileName}-${testCaseName}`, { shape: 'box', label: testCaseName });
-                                    graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted', color: colors[colorIndex] });
+                                    graph.addEdge(testFileName, `${testFileName}-${testCaseName}`, { style: 'dotted' });
                                     addedEdges.add(edgeId);
                                 }
                             }
                         });
 
-                        graph.addEdge(htmlFileName, sourceFileName, { label: cls, color: colors[colorIndex] });
-                        graph.addEdge(sourceFileName, testFileName, { label: `${cls} (Lines ${lineNumbers.join(', ')})`, color: colors[colorIndex] });
-                        colorIndex = (colorIndex + 1) % colors.length; // Increment color index
+                        graph.addEdge(htmlFileName, sourceFileName, { label: cls});
+                        graph.addEdge(sourceFileName, testFileName, { label: `${cls} (Lines ${lineNumbers.join(', ')})` });
                     }
                 }
             });
         });
     });
 
-    // Add nodes for files with dependencies
     filesWithDependencies.forEach(fileName => {
         graph.addNode(fileName);
     });
@@ -290,12 +279,11 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths, searchQue
 
 
 function getAllLineNumbers(fileContent, item) {
-    // Find all line numbers of the item in the file content
     const lines = fileContent.split('\n');
     const lineNumbers = [];
     for (let i = 0; i < lines.length; i++) {
         if (lines[i].includes(item)) {
-            lineNumbers.push(i + 1); // Line numbers start from 1
+            lineNumbers.push(i + 1); 
         }
     }
     return lineNumbers;

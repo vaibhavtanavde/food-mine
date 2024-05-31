@@ -1,33 +1,32 @@
-// cart-page.spec.ts
 import { browser, by, element, ExpectedConditions as EC } from 'protractor';
 
 describe('CartPageComponent', () => {
   beforeEach(() => {
-    browser.sleep(2000);
   });
 
-  const addToCart = async () => {
-    const addToCartButton = element(by.css('button[_ngcontent-ng-c3903630442]'));
-    await addToCartButton.click();
-    await browser.sleep(2000);
-  };
+  it('should add to cart', () => {
+    const cartItemfoodname = element(by.css('a[ng-reflect-router-link="/food/65957e915bbdf523e45b575e"]'));
+    
+    // Wait until the anchor is visible
+    browser.wait(EC.visibilityOf(cartItemfoodname), 5000).then(() => {
+      cartItemfoodname.getText().then((text) => {
+        expect(text).toBe('Meatball');
+      });
 
-  const removeFromCart = async () => {
-    const removeFromCartButton = element(by.css('button[_ngcontent-ng-c4187611182]'));
-    await removeFromCartButton.click();
-    await browser.sleep(2000);
-  };
-
-  it('should add to cart', async () => {
-    element(by.css('img[src="assets/food-1.jpg"]')).click();
-    await addToCart();
-    expect(browser.getCurrentUrl()).toContain('http://localhost:4200/cart-page');
-  });
-
-  it('should remove from cart', async () => {
-    await removeFromCart();
-    element(by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
-    expect(browser.getCurrentUrl()).toContain('http://localhost:4200/');
-    console.log("Cart Page Test Passed");
+      // Select quantity
+      const cartItemquantity = element(by.css('select[_ngcontent-ng-c471533846]'));
+      cartItemquantity.click().then(() => {
+        // Wait for the dropdown options to be visible
+        browser.wait(EC.visibilityOf(element(by.cssContainingText('option', '3'))), 5000).then(() => {
+          const option = element(by.cssContainingText('option', '3'));
+          option.click();
+          const ProceedtoCheckout = element(by.css('a[ng-reflect-router-link="/checkout"]'));
+          ProceedtoCheckout.click().then(() => {
+            // Optionally, you might want to wait for the checkout page to load
+            browser.wait(EC.urlContains('/checkout'), 5000);
+          });
+        });
+      });
+    });
   });
 });

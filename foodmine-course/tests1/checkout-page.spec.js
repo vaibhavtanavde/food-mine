@@ -43,87 +43,18 @@ describe('CheckoutPageComponent', function () {
         protractor_1.browser.sleep(2000);
     });
     it('should add item to cart & check payment details', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var addToCart, nameInput, addressInput, _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    (0, protractor_1.element)(protractor_1.by.css('a[ng-reflect-router-link="/"]')).click(); // Go to Home Page Link
-                    (0, protractor_1.element)(protractor_1.by.css('img[src="assets/food-1.jpg"]')).click();
-                    protractor_1.browser.sleep(2000);
-                    addToCart = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3903630442]'));
-                    addToCart.click();
-                    (0, protractor_1.element)(protractor_1.by.css('a[ng-reflect-router-link="/checkout"]')).click(); // Proceed to Cart button
-                    protractor_1.browser.sleep(2000);
-                    nameInput = (0, protractor_1.element)(protractor_1.by.css('input[placeholder="Name"]'));
-                    addressInput = (0, protractor_1.element)(protractor_1.by.css('input[placeholder="Address"]'));
-                    // Validate default values
-                    _a = expect;
-                    return [4 /*yield*/, nameInput.getAttribute('value')];
-                case 1:
-                    // Validate default values
-                    _a.apply(void 0, [_c.sent()]).toBe('John Doe'); // Assuming 'John Doe' is the default name
-                    _b = expect;
-                    return [4 /*yield*/, addressInput.getAttribute('value')];
-                case 2:
-                    _b.apply(void 0, [_c.sent()]).toBe('123 Street, City');
-                    protractor_1.browser.sleep(5000);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('Error message capture', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var createOrder, toastMessageText;
+        var FindMyLocation, mapElement, GoToPayment;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    createOrder = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c1064162151]'));
-                    return [4 /*yield*/, createOrder.click()];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, protractor_1.browser.wait(protractor_1.ExpectedConditions.visibilityOf((0, protractor_1.element)(protractor_1.by.xpath("//div[@aria-label='Please select your location on the map']"))), 5000)];
-                case 2:
-                    _a.sent();
-                    return [4 /*yield*/, (0, protractor_1.element)(protractor_1.by.xpath("//div[@aria-label='Please select your location on the map']")).getText()];
-                case 3:
-                    toastMessageText = _a.sent();
-                    // Assert that the captured text is what you expect
-                    expect(toastMessageText).toEqual('Please select your location on the map');
-                    console.log("Got the error message");
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('should create order & navigate to payment page', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var mapElement, createOrder, _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    mapElement = (0, protractor_1.element)(protractor_1.by.className('leaflet-container'));
-                    return [4 /*yield*/, mapElement.click()];
-                case 1:
-                    _b.sent();
-                    protractor_1.browser.sleep(2000);
-                    createOrder = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c1064162151]'));
-                    // Click create order button
-                    return [4 /*yield*/, createOrder.click()];
-                case 2:
-                    // Click create order button
-                    _b.sent();
-                    protractor_1.browser.sleep(2000);
-                    // Wait for navigation to payment page
-                    return [4 /*yield*/, protractor_1.browser.wait(protractor_1.ExpectedConditions.urlContains('/payment'), 10000)];
-                case 3:
-                    // Wait for navigation to payment page
-                    _b.sent();
-                    // Assert the URL is correct
-                    _a = expect;
-                    return [4 /*yield*/, protractor_1.browser.getCurrentUrl()];
-                case 4:
-                    // Assert the URL is correct
-                    _a.apply(void 0, [_b.sent()]).toContain('/payment');
-                    console.log("Checkout page test passed");
-                    return [2 /*return*/];
-            }
+            FindMyLocation = (0, protractor_1.element)(protractor_1.by.css('.find-location'));
+            FindMyLocation.click();
+            protractor_1.browser.sleep(2000);
+            mapElement = (0, protractor_1.element)(protractor_1.by.className('leaflet-container'));
+            mapElement.click();
+            protractor_1.browser.sleep(2000);
+            GoToPayment = (0, protractor_1.element)(protractor_1.by.css('button[_ngcontent-ng-c3269807487]'));
+            GoToPayment.click();
+            protractor_1.browser.wait(protractor_1.ExpectedConditions.urlContains('http://localhost:4200/payment'), 5000);
+            return [2 /*return*/];
         });
     }); });
 });

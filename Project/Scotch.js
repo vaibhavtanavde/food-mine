@@ -2,7 +2,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Function to recursively get all TypeScript files from a directory
 function getAllTypeScriptFiles(dir) {
     let files = fs.readdirSync(dir);
     let tsFiles = [];
@@ -10,15 +9,15 @@ function getAllTypeScriptFiles(dir) {
         let filePath = path.join(dir, file);
         let stats = fs.statSync(filePath);
         if (stats.isDirectory()) {
-            tsFiles = tsFiles.concat(getAllTypeScriptFiles(filePath)); // Recursively search subdirectories
+            tsFiles = tsFiles.concat(getAllTypeScriptFiles(filePath));
         } else if (file.endsWith('.ts')) {
-            tsFiles.push(filePath); // Add TypeScript file to the list
+            tsFiles.push(filePath); 
         }
     }
     return tsFiles;
 }
 
-// Function to extract functions and classes from a TypeScript file
+
 function extractItems(filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const functionRegex = /(?:public|private)?\s+(\w+)\s*\(/g;
@@ -39,7 +38,7 @@ function extractItems(filePath) {
     return { functions, classes };
 }
 
-// Function to analyze the relationship between source code and test files
+
 function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths) {
     const relationshipMap = {};
 
@@ -54,14 +53,8 @@ function analyzeSourceTestRelationship(sourceFilePaths, testFilePaths) {
             const testContent = fs.readFileSync(testFilePath, 'utf-8');
 
             functions.forEach(func => {
-                if (func !== 'if' && testContent.includes(func)) {
+                if (func !== 'if' && func !== 'log' && testContent.includes(func)) {
                     relationshipMap[sourceFileName].functions.push({ testFile: testFilePath, linkedFunctions: [func] });
-                }
-            });
-
-            classes.forEach(cls => {
-                if (testContent.includes(cls)) {
-                    relationshipMap[sourceFileName].classes.push({ testFile: testFilePath, linkedClasses: [cls] });
                 }
             });
         });

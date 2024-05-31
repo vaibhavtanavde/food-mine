@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+//register.spec.ts
 var protractor_1 = require("protractor");
 describe('RegisterPageComponent', function () {
     beforeEach(function () {
@@ -21,15 +22,14 @@ describe('RegisterPageComponent', function () {
         var passwordInput = (0, protractor_1.element)(protractor_1.by.css('input[placeholder="Password"]'));
         var confirmPasswordInput = (0, protractor_1.element)(protractor_1.by.css('input[placeholder="Confirm Password"]'));
         var addressInput = (0, protractor_1.element)(protractor_1.by.css('input[placeholder="Address"]'));
-        var submitButton = (0, protractor_1.element)(protractor_1.by.css('button[type="submit"]'));
+        var Register = (0, protractor_1.element)(protractor_1.by.css('button[type="submit"]'));
         nameInput.sendKeys('John Doe');
-        emailInput.sendKeys('payal061000@example.com');
+        emailInput.sendKeys('swt8@example.com');
         passwordInput.sendKeys('password');
         confirmPasswordInput.sendKeys('password');
         addressInput.sendKeys('123 Street, City');
-        submitButton.click();
+        Register.click();
         protractor_1.browser.sleep(2000);
-        // Expectations after successful registration
         expect(protractor_1.browser.getCurrentUrl()).toContain('http://localhost:4200/');
         console.log("Register Page Test Passed");
     });
