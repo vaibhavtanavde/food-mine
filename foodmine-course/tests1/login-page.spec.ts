@@ -9,10 +9,8 @@ describe('LoginPageComponent', () => {
   });
 
   it('should display Login form', () => {
-     const Login = element(by.css('a[routerlink="/login"]'));
-     const RegisterHere = element(by.css('a[routerlink="/register'));
-     Login.click();
-     RegisterHere.click();
+     const Login = element(by.css('a[routerlink="/login"]')).click();
+     const RegisterHere = element(by.css('a[routerlink="/register')).click();
      expect(browser.getCurrentUrl()).toContain('http://localhost:4200/register');
      console.log("Login Page Test Passed")
   });

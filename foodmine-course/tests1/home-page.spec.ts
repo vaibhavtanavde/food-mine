@@ -8,17 +8,13 @@ describe('HomeComponent', () => {
   });
 
   it('should display home form elements', () => {
-  const foodname= element(by.css('img[src="assets/food-1.jpg"]'));
-  foodname.click();
+  const foodname= element(by.css('img[src="assets/food-1.jpg"]')).click();
   browser.sleep(2000);
-  const AddToCart = element(by.css('button[_ngcontent-ng-c4203585026]'));
-  AddToCart.click();
+  const AddToCart = element(by.css('button[_ngcontent-ng-c4203585026]')).click();
   browser.sleep(2000);
-  const Remove = element(by.css('button[_ngcontent-ng-c471533846]'));
-  Remove.click();
+  const Remove = element(by.css('button[_ngcontent-ng-c471533846]')).click();
   browser.sleep(2000);
-  const FoodMine = element(by.css('a.logo[routerlink="/"]'));
-  FoodMine.click();
+  const FoodMine = element(by.css('a.logo[routerlink="/"]')).click();
   });
 
 });
