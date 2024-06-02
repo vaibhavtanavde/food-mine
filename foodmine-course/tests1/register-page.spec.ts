@@ -1,6 +1,6 @@
 import { browser, by, element, ExpectedConditions as EC } from 'protractor';
 
-describe('RegisterPageComponent', () => {
+describe('Test Suite', () => {
   beforeEach(() => {
     browser.sleep(2000);
     browser.manage().window().maximize();

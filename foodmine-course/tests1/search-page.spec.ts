@@ -1,6 +1,6 @@
 import { browser, by, element, ExpectedConditions as EC } from 'protractor';
 
-describe('SearchPageComponent', () => {
+describe('Test Suite', () => {
   beforeEach(() => {
     browser.sleep(2000);
     browser.manage().window().maximize();
@@ -17,7 +17,7 @@ describe('SearchPageComponent', () => {
     browser.sleep(2000);
 });
 
-  it('should navigate to Home Page', () => {
+  it('should navigate to Home page', () => {
     const FoodMine = element(by.css('a.logo[routerlink="/"]')).click();
     expect(browser.getCurrentUrl()).toContain('http://localhost:4200/');
   });

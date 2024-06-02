@@ -158,31 +158,39 @@ app.get('/analyze', (req, res) => {
                     graph.addNode(elementNodeId, { shape: 'box', label: element });
                     graph.addEdge(sourceFileName, elementNodeId);
 
-                    usage.forEach(({ file, line }) => {
+                    usage.forEach(({ file, line, testName }) => {
                         const testFileName = path.basename(file);
                         const lineNodeId = `${testFileName}-${line}`;
-
+                    
+                        // Append test case name to the line number label
+                        const lineLabel = `Line ${line}: ${testName}`;
+                        graph.addNode(lineNodeId, { shape: 'note', label: lineLabel });
+                    
                         graph.addNode(testFileName, { shape: 'ellipse', label: testFileName });
-                        graph.addNode(lineNodeId, { shape: 'note', label: `Line ${line}` });
-
+                        graph.addNode(elementNodeId, { shape: 'box', label: element });
+                    
                         graph.addEdge(elementNodeId, lineNodeId);
                         graph.addEdge(lineNodeId, testFileName);
                     });
+                    
                 } else if (mode === 'test-to-code') {
                     // Test-to-Code mode: Test file on left, line number and UI element in middle, HTML file on right
-                    usage.forEach(({ file, line }) => {
+                    usage.forEach(({ file, line, testName }) => {
                         const testFileName = path.basename(file);
                         const lineNodeId = `${testFileName}-${line}`;
                         const elementNodeId = `${element}-${lineNodeId}`;
-
+                    
+                        // Append test case name to the line number label
+                        const lineLabel = `Line ${line}: ${testName}`;
+                        graph.addNode(lineNodeId, { shape: 'note', label: lineLabel });
+                    
                         graph.addNode(testFileName, { shape: 'ellipse', label: testFileName });
-                        graph.addNode(lineNodeId, { shape: 'note', label: `Line ${line}` });
                         graph.addNode(elementNodeId, { shape: 'box', label: element });
-
+                    
                         graph.addEdge(testFileName, lineNodeId);
                         graph.addEdge(lineNodeId, elementNodeId);
                         graph.addEdge(elementNodeId, sourceFileName);
-                    });
+                    });                    
                 }
             }
         });
@@ -274,10 +282,21 @@ function toCamelCase(str) {
 
 function generateVariableNames(element) {
     const camelCaseName = toCamelCase(element);
-    return [
+    const withoutSpecialChars = element.replace(/[\s.-]+/g, '');
+    const variableNames = [
         camelCaseName,
-        camelCaseName.charAt(0).toUpperCase() + camelCaseName.slice(1)
+        camelCaseName.charAt(0).toUpperCase() + camelCaseName.slice(1),
+        withoutSpecialChars,
+        withoutSpecialChars.toLowerCase(),
+        withoutSpecialChars.toUpperCase(),
+        element.replace(/\s+/g, ''), // Remove spaces
+        element.replace(/\s+/g, '').toLowerCase(), // Remove spaces and lowercase
+        element.replace(/\s+/g, '').toUpperCase(), // Remove spaces and uppercase
+        element.toLowerCase(), // Lowercase
+        element.toUpperCase(), // Uppercase
     ];
+    
+    return variableNames;
 }
 
 function findElementUsage(element, testFiles) {
@@ -287,13 +306,25 @@ function findElementUsage(element, testFiles) {
 
     for (const [filePath, content] of Object.entries(testFiles)) {
         const lines = content.split('\n');
+        let currentTestName = '';
+
         lines.forEach((line, index) => {
+            // Check if it block starts
+            if (line.trim().startsWith('it(')) {
+                const match = line.match(/it\(['"](.*?)['"]/);
+                if (match && match[1]) {
+                    currentTestName = match[1];
+                }
+            }
+
             variableNames.forEach(name => {
-                if (line.includes(name)) {
+                const regex = new RegExp(`\\b${name}\\b`, 'g');
+                if (regex.test(line)) {
                     const usageKey = `${filePath}-${index + 1}`;
                     if (!seenUsages.has(usageKey)) {
                         seenUsages.add(usageKey);
-                        usage.push({ file: filePath, line: index + 1 });
+                        // Push test case name along with line number
+                        usage.push({ file: filePath, line: index + 1, testName: currentTestName });
                     }
                 }
             });
