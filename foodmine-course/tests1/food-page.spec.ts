@@ -13,7 +13,8 @@ describe('Test Suite', () => {
     item.sendKeys("Meatball");
     item.getAttribute('value').then((itemValue) => {
       browser.sleep(2000);
-      const Search = element(by.css('button[_ngcontent-ng-c882576285]')).click();
+      const Search = element(by.css('button[_ngcontent-ng-c882576285]'));
+      Search.click();
       browser.sleep(2000);
       });
     });

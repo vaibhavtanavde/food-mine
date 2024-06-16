@@ -16,11 +16,11 @@ describe('Test Suite', () => {
   });
 
   it('should register a new user', () => {
-    const nameInput = element(by.css('input[placeholder="Name"]')).sendKeys('John Doe');
-    const emailInput = element(by.css('input[placeholder="Email"]')).sendKeys('john007@example.com');
-    const passwordInput = element(by.css('input[placeholder="Password"]')).sendKeys('password');
-    const confirmPasswordInput = element(by.css('input[placeholder="Confirm Password"]')).sendKeys('password');
-    const addressInput = element(by.css('input[placeholder="Address"]')).sendKeys('123 Street, City');
+    const Name = element(by.css('input[placeholder="Name"]')).sendKeys('John Doe');
+    const Email = element(by.css('input[placeholder="Email"]')).sendKeys('john007@example.com');
+    const Password = element(by.css('input[placeholder="Password"]')).sendKeys('password');
+    const ConfirmPassword = element(by.css('input[placeholder="Confirm Password"]')).sendKeys('password');
+    const Address = element(by.css('input[placeholder="Address"]')).sendKeys('123 Street, City');
     const Register = element(by.css('button[type="submit"]')).click();
     browser.sleep(2000);
     expect(browser.getCurrentUrl()).toContain('http://localhost:4200/');
