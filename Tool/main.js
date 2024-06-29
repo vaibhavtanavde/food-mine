@@ -283,7 +283,7 @@ app.get('/analyze', (req, res) => {
         return res.status(400).send(`Error: No files matched the search query "${searchQuery}".`);
     }
 
-    // Only add unreferenced elements if not in test-to-code mode or if there's no search query
+
     if (!(mode === 'test-to-code' && searchQuery)) {
         for (const [file, elements] of Object.entries(unreferencedElements)) {
             const sourceFileName = path.basename(file);
@@ -358,13 +358,13 @@ app.get('/analyze', (req, res) => {
                 clickableElements.push(elementText);
             }
             else if (tagName === 'p') {
-                // Handle extracting AngularJS or Vue.js expressions from <p> tags
+
                 const angularExpression = $(element).text().trim();
                 if (angularExpression.startsWith('{{') && angularExpression.endsWith('}}')) {
-                    // Extracting the expression inside {{ ... }}
+
                     elementText = angularExpression.substring(2, angularExpression.length - 2).trim();
                 } else {
-                    // Default to the whole text content if not in {{ ... }} format
+
                     elementText = cleanText($(element).text());
                 }
                 clickableElements.push(elementText || 'N/A');
@@ -400,11 +400,11 @@ app.get('/analyze', (req, res) => {
             withoutSpecialChars,
             withoutSpecialChars.toLowerCase(),
             withoutSpecialChars.toUpperCase(),
-            element.replace(/\s+/g, ''), // Remove spaces
-            element.replace(/\s+/g, '').toLowerCase(), // Remove spaces and lowercase
-            element.replace(/\s+/g, '').toUpperCase(), // Remove spaces and uppercase
-            element.toLowerCase(), // Lowercase
-            element.toUpperCase(), // Uppercase
+            element.replace(/\s+/g, ''), 
+            element.replace(/\s+/g, '').toLowerCase(), 
+            element.replace(/\s+/g, '').toUpperCase(), 
+            element.toLowerCase(), 
+            element.toUpperCase(), 
         ];
         
         return variableNames;
@@ -420,7 +420,7 @@ app.get('/analyze', (req, res) => {
             let currentTestName = '';
     
             lines.forEach((line, index) => {
-                // Check if it or describe block starts
+                
                 if (line.trim().startsWith('it(') || line.trim().startsWith('describe(')) {
                     const match = line.match(/(it|describe)\(['"](.*?)['"]/);
                     if (match && match[2]) {
@@ -429,18 +429,18 @@ app.get('/analyze', (req, res) => {
                 }
     
                 variableNames.forEach(name => {
-                    // Skip matching in it or describe descriptions
+
                     if (/it\(|describe\(/.test(line)) {
                         return;
                     }
     
-                    // Refined regex to match variable usage but avoid matching in comments or strings
+                    
                     const regex = new RegExp(`\\b${name}\\b(?!['"])`, 'g');
                     if (regex.test(line)) {
                         const usageKey = `${filePath}-${index + 1}`;
                         if (!seenUsages.has(usageKey)) {
                             seenUsages.add(usageKey);
-                            // Push test case name along with line number
+                            
                             usage.push({ file: filePath, line: index + 1, testName: currentTestName });
                         }
                     }
