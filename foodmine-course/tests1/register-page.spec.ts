@@ -2,8 +2,7 @@ import { browser, by, element, ExpectedConditions as EC } from 'protractor';
 
 describe('Test Suite', () => {
   beforeEach(() => {
-    browser.sleep(2000);
-    browser.manage().window().maximize();
+    browser.sleep(3000);
   });
 
   it('should display register form elements', () => {
@@ -17,7 +16,7 @@ describe('Test Suite', () => {
 
   it('should register a new user', () => {
     const Name = element(by.css('input[placeholder="Name"]')).sendKeys('John Doe');
-    const Email = element(by.css('input[placeholder="Email"]')).sendKeys('john007@example.com');
+    const Email = element(by.css('input[placeholder="Email"]')).sendKeys('payal16@example.com');
     const Password = element(by.css('input[placeholder="Password"]')).sendKeys('password');
     const ConfirmPassword = element(by.css('input[placeholder="Confirm Password"]')).sendKeys('password');
     const Address = element(by.css('input[placeholder="Address"]')).sendKeys('123 Street, City');
