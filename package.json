@@ -32,6 +32,6 @@
     "express": "^4.19.2",
     "graphviz": "^0.0.9",
     "opn": "^6.0.0",
-    "traceability_visualization_tool": "^1.0.0"
+    "traceability_visualization_tool": "^1.0.2"
   }
 }
