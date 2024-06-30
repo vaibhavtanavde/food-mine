@@ -36,13 +36,13 @@ function extractClickableElements(htmlContent) {
             clickableElements.push(elementText);
         }
         else if (tagName === 'p') {
-            // Handle extracting AngularJS or Vue.js expressions from <p> tags
+
             const angularExpression = $(element).text().trim();
             if (angularExpression.startsWith('{{') && angularExpression.endsWith('}}')) {
-                // Extracting the expression inside {{ ... }}
+
                 elementText = angularExpression.substring(2, angularExpression.length - 2).trim();
             } else {
-                // Default to the whole text content if not in {{ ... }} format
+
                 elementText = cleanText($(element).text());
             }
             clickableElements.push(elementText || 'N/A');

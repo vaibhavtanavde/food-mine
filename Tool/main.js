@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Source-Test Relationship Analyzer</title>
+        <title>Visualization Tool</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -99,13 +99,13 @@ app.get('/', (req, res) => {
     const searchQuery = document.getElementById('searchQuery').value;
     const mode = document.querySelector('input[name="mode"]:checked').value;
 
-    // Check for empty source directory
+    
     if (!sourceDir.trim()) {
         showError('Source directory is required.');
         return;
     }
 
-    // Check for HTML files in source directory
+    
     axios.get('/validate', {
         params: {
             dir: sourceDir,
@@ -118,13 +118,13 @@ app.get('/', (req, res) => {
             return;
         }
 
-        // Check for empty test directory
+        
         if (!testDir.trim()) {
             showError('Test directory is required.');
             return;
         }
 
-        // Check for TS files in test directory
+        
         axios.get('/validate', {
             params: {
                 dir: testDir,
@@ -137,7 +137,7 @@ app.get('/', (req, res) => {
                 return;
             }
 
-            // Clear any previous error messages
+            
             clearError();
 
             axios.get('/analyze', {
