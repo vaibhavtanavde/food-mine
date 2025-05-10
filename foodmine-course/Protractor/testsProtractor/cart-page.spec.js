@@ -1,4 +1,4 @@
-const cartPage = require('../pages/cart-page');
+const cartPage = require('../pagesProtractor/cart-page');
 
 describe('Cart Page Tests', () => {
 

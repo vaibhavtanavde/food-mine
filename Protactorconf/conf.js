@@ -1,4 +1,5 @@
 // conf.js
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 exports.config = {
   directConnect: true,
 
@@ -7,18 +8,22 @@ exports.config = {
     'browserName': 'chrome'
   },
 
+    params: {
+    testEmail: process.env.TEST_EMAIL,
+  },
+
   // Framework to use. Jasmine is recommended.
   framework: 'jasmine',
 
   // Spec patterns are relative to the current working directory when
   // protractor is called.
   specs: [
-    '../foodmine-course/tests/login-page.spec.js',
-    '../foodmine-course/tests/register-page.spec.js',
-    '../foodmine-course/tests/search-page.spec.js',
-    '../foodmine-course/tests/food-page.spec.js',
-    '../foodmine-course/tests/cart-page.spec.js',
-    '../foodmine-course/tests/checkout-page.spec.js'
+    '../foodmine-course/Protractor/testsProtractor/login-page.spec.js',
+    '../foodmine-course/Protractor/testsProtractor/register-page.spec.js',
+    '../foodmine-course/Protractor/testsProtractor/search-page.spec.js',
+    '../foodmine-course/Protractor/testsProtractor/food-page.spec.js',
+    '../foodmine-course/Protractor/testsProtractor/cart-page.spec.js',
+    '../foodmine-course/Protractor/testsProtractor/checkout-page.spec.js'
   ],
 
   // Options to be passed to Jasmine.

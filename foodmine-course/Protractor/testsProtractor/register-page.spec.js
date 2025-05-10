@@ -1,4 +1,4 @@
-const registerPage = require('../pages/register-page');
+const registerPage = require('../pagesProtractor/register-page');
 
 describe('Register Page Tests', () => {
   it('Verify user should be able to display all register form fields', async () => {
@@ -7,7 +7,8 @@ describe('Register Page Tests', () => {
   });
 
   it('Verify user should be able to register a new user successfully', async () => {
-    await registerPage.registerUser('John Doe', 'payal07may@example.com', 'password', '123 Street, City');
+    const email = browser.params.testEmail;
+    await registerPage.registerUser('John Doe', email, 'password', '123 Street, City');
     expect(await registerPage.getCurrentUrl()).toContain('/');
   });
 });

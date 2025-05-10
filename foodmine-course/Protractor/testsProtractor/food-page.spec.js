@@ -1,4 +1,4 @@
-const foodPage = require('../pages/food-page');
+const foodPage = require('../pagesProtractor/food-page');
 
 describe('Food Page Tests', () => {
   it('Verify user should be able to add and then remove a food item from the cart', async () => {

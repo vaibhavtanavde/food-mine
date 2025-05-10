@@ -1,4 +1,4 @@
-const searchPage = require('../pages/search-page');
+const searchPage = require('../pagesProtractor/search-page');
 
 describe('Search Page Tests', () => {
   beforeEach(async () => {

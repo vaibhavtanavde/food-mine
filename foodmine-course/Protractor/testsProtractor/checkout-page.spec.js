@@ -1,4 +1,4 @@
-const checkoutPage = require('../pages/checkout-page');
+const checkoutPage = require('../pagesProtractor/checkout-page');
 
 describe('Checkout Page Tests', () => {
 
