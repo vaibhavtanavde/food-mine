@@ -32,4 +32,23 @@ export class LoginPage {
      this.enterPassword().type(password, { force: true });
   }
 
+  login(email, password){
+    cy.visit('http://localhost:4200');
+    cy.get('a[routerlink="/login"]').should('be.visible').click();
+    cy.get('input[placeholder="Email"]').type(email, { force: true });
+    cy.get('input[placeholder="Password"]').type(password, { force: true });
+    cy.get('button[type="submit"]').click()
+  }
+
+  loginSession(email, password) {
+    cy.session([email, password], () => {
+      this.visitHome();
+      this.clickLogin();
+      this.fillloginCredentials(email, password);
+      this.clickSubmit();
+      cy.url().should('not.include', '/login');
+    });
+    cy.visit('http://localhost:4200');
+  }
+
 }
