@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../testsPlaywright/fixtures';
 import { RegisterPage } from '../pagesPlaywright/RegisterPage';
 
 test.describe('Register Page Tests', () => {
@@ -18,10 +18,9 @@ test.describe('Register Page Tests', () => {
     await expect(page.locator(registerPage.submitButton)).toBeVisible();
   });
 
-  test('should register a new user successfully', async () => {
-    const email = process.env.TEST_EMAIL;
-    await registerPage.fillForm('John Doe', email, 'password', '123 Street, City');
+  test('should register a new user successfully', async ({ testEmail }) => {
+    await registerPage.fillForm('John Doe', testEmail, 'password', '123 Street, City');
     await registerPage.submitForm();
     await registerPage.verifyRedirectToHome();
   });
-});
+})  

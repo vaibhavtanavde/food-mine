@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../testsPlaywright/fixtures';
 import { LoginPage } from '../pagesPlaywright/LoginPage';
 import { CheckoutPage } from '../pagesPlaywright/CheckoutPage';
 import { CartPage } from '../pagesPlaywright/CartPage';
@@ -8,13 +8,12 @@ test.describe('Checkout Page Tests', () => {
   let checkoutPage;
   let cartPage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, testEmail }) => {
     loginPage = new LoginPage(page);
     checkoutPage = new CheckoutPage(page);
     cartPage = new CartPage(page);
 
-    const email = process.env.TEST_EMAIL;
-    await loginPage.login(email, 'password');
+    await loginPage.login(testEmail, 'password');
   });
 
   test('Verify user should be able to navigate to payment page', async () => {

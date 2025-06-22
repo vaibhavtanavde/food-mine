@@ -1,5 +1,5 @@
 // conf.js
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+require('dotenv').config();
 exports.config = {
   directConnect: true,
 
@@ -18,12 +18,12 @@ exports.config = {
   // Spec patterns are relative to the current working directory when
   // protractor is called.
   specs: [
-    '../foodmine-course/Protractor/testsProtractor/login-page.spec.js',
-    '../foodmine-course/Protractor/testsProtractor/register-page.spec.js',
-    '../foodmine-course/Protractor/testsProtractor/search-page.spec.js',
-    '../foodmine-course/Protractor/testsProtractor/food-page.spec.js',
-    '../foodmine-course/Protractor/testsProtractor/cart-page.spec.js',
-    '../foodmine-course/Protractor/testsProtractor/checkout-page.spec.js'
+    './foodmine-course/Protractor/testsProtractor/login-page.spec.js',
+    './foodmine-course/Protractor/testsProtractor/register-page.spec.js',
+    './foodmine-course/Protractor/testsProtractor/search-page.spec.js',
+    './foodmine-course/Protractor/testsProtractor/food-page.spec.js',
+    './foodmine-course/Protractor/testsProtractor/cart-page.spec.js',
+    './foodmine-course/Protractor/testsProtractor/checkout-page.spec.js'
   ],
 
   // Options to be passed to Jasmine.

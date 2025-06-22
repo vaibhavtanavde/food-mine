@@ -4,13 +4,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default defineConfig({
-  testDir: './foodmine-course/Playwright/testsPlaywright', // your test directory
-  timeout: 30 * 1000,
-  expect: {
-    timeout: 5000,
-  },
+  testDir: './foodmine-course/Playwright/testsPlaywright',
+  timeout: 60000,
+  expect: { timeout: 10000 },
+  fullyParallel: true, // ✅ Enable full parallelism
   reporter: [['list'], ['html', { outputFolder: 'playwright-report' }]],
-  workers: 1,
+  workers: 3, // 👈 If you want full parallelism, consider increasing this (optional)
   use: {
     baseURL: 'http://localhost:4200',
     headless: true,

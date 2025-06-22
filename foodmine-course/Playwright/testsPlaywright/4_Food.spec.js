@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../testsPlaywright/fixtures';
 import { LoginPage } from '../pagesPlaywright/LoginPage';
 import { FoodPage } from '../pagesPlaywright/FoodPage';
 
@@ -6,12 +6,11 @@ test.describe('Food Page Tests', () => {
   let loginPage;
   let foodPage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, testEmail }) => {
     loginPage = new LoginPage(page);
     foodPage = new FoodPage(page);
 
-    const email = process.env.TEST_EMAIL;
-    await loginPage.login(email, 'password');
+    await loginPage.login(testEmail, 'password');
   });
 
   test('Verify user should be able to add and then remove a food item from the cart', async ({ page }) => {
