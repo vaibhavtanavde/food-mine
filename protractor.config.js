@@ -5,7 +5,14 @@ exports.config = {
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
-    'browserName': 'chrome'
+    //browserName: 'chrome',
+    //  chromeOptions: {
+    //    args: ['--headless', '--window-size=1920,1080']
+    //}
+    'browserName': 'firefox',
+    'moz:firefoxOptions': {
+    args: ['--headless', '--window-size=1920,1080']
+  }
   },
 
     params: {

@@ -7,9 +7,9 @@ export default defineConfig({
   testDir: './foodmine-course/Playwright/testsPlaywright',
   timeout: 60000,
   expect: { timeout: 10000 },
-  fullyParallel: true, // ✅ Enable full parallelism
+  fullyParallel: false, // ✅ Enable full parallelism
   reporter: [['list'], ['html', { outputFolder: 'playwright-report' }]],
-  workers: 3, // 👈 If you want full parallelism, consider increasing this (optional)
+  workers: 1, // 👈 If you want full parallelism, consider increasing this (optional)
   use: {
     baseURL: 'http://localhost:4200',
     headless: true,

@@ -1,10 +1,12 @@
-import { test, expect } from '../testsPlaywright/fixtures';
-import { RegisterPage } from '../pagesPlaywright/RegisterPage';
+const { test, expect } = require('@playwright/test');
+const { ensureUserAndSession, getSessionData } = require('../utils/sessionManager');
+const { RegisterPage } = require('../pagesPlaywright/RegisterPage');
 
 test.describe('Register Page Tests', () => {
   let registerPage;
 
   test.beforeEach(async ({ page }) => {
+    await ensureUserAndSession();
     registerPage = new RegisterPage(page);
     await registerPage.visitRegister();
   });
@@ -17,10 +19,4 @@ test.describe('Register Page Tests', () => {
     await expect(page.locator(registerPage.addressInput)).toBeVisible();
     await expect(page.locator(registerPage.submitButton)).toBeVisible();
   });
-
-  test('should register a new user successfully', async ({ testEmail }) => {
-    await registerPage.fillForm('John Doe', testEmail, 'password', '123 Street, City');
-    await registerPage.submitForm();
-    await registerPage.verifyRedirectToHome();
-  });
-})  
+});

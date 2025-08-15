@@ -1,19 +1,25 @@
-import { test, expect } from '../testsPlaywright/fixtures';
-import { LoginPage } from '../pagesPlaywright/LoginPage';
-import { CheckoutPage } from '../pagesPlaywright/CheckoutPage';
-import { CartPage } from '../pagesPlaywright/CartPage';
+const { test, expect } = require('@playwright/test');
+const { ensureUserAndSession, getSessionData, storagePath } = require('../utils/sessionManager');
+const { LoginPage } = require('../pagesPlaywright/LoginPage');
+const { CartPage } = require('../pagesPlaywright/CartPage');
+const { CheckoutPage } = require('../pagesPlaywright/CheckoutPage');
 
-test.describe('Checkout Page Tests', () => {
+test.use({ storageState: storagePath });
+
+test.describe('Food Page Tests', () => {
   let loginPage;
-  let checkoutPage;
   let cartPage;
+  let checkoutPage;
 
-  test.beforeEach(async ({ page, testEmail }) => {
+  test.beforeAll(async () => {
+    await ensureUserAndSession(); // register + store session (only once)
+  });
+
+  test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    checkoutPage = new CheckoutPage(page);
     cartPage = new CartPage(page);
-
-    await loginPage.login(testEmail, 'password');
+    checkoutPage = new CheckoutPage(page)
+    await page.goto('http://localhost:4200');
   });
 
   test('Verify user should be able to navigate to payment page', async () => {

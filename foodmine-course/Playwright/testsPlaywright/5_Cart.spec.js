@@ -1,16 +1,23 @@
-import { test, expect } from '../testsPlaywright/fixtures';
-import { LoginPage } from '../pagesPlaywright/LoginPage';
-import { CartPage } from '../pagesPlaywright/CartPage';
+const { test, expect } = require('@playwright/test');
+const { ensureUserAndSession, getSessionData, storagePath } = require('../utils/sessionManager');
+const { LoginPage } = require('../pagesPlaywright/LoginPage');
+const { CartPage } = require('../pagesPlaywright/CartPage');
+
+test.use({ storageState: storagePath });
 
 test.describe('Cart Page Tests', () => {
   let loginPage;
   let cartPage;
 
-  test.beforeEach(async ({ page, testEmail }) => {
+  test.beforeAll(async () => {
+    await ensureUserAndSession(); // register + store session (only once)
+  });
+
+  
+  test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     cartPage = new CartPage(page);
-
-    await loginPage.login(testEmail, 'password');
+    await page.goto('http://localhost:4200');
   });
 
   test('Verify user should be able to check for food name', async () => {

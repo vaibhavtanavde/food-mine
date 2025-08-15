@@ -1,4 +1,4 @@
-import { test, expect } from '../testsPlaywright/fixtures';
+const { test, expect } = require('@playwright/test');
 import { LoginPage } from '../pagesPlaywright/LoginPage';
 
 test.describe('Login Page Tests', () => {
