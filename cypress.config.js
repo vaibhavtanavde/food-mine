@@ -13,7 +13,10 @@ module.exports = defineConfig({
       'foodmine-course/Cypress/testsCypress/Checkout.cy.js'
     ],
     env: {
-      testEmail: process.env.TEST_EMAIL
+      testEmail: process.env.TEST_EMAIL,
+      testName: 'John Doe',
+      testPassword: 'password',
+      testAddress: '123 Street, City'
     },
     supportFile: false,
     setupNodeEvents(on, config) {

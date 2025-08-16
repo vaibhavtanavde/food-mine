@@ -20,27 +20,31 @@ async function ensureUserAndSession() {
   // Generate unique email
   const email = `testuser_${Date.now()}@example.com`;
   const password = 'password';
+  const name = 'John Doe';
+  const address = '123 Test Lane';
 
   // Register
   await page.goto(`${appUrl}/register`);
-  await page.fill('input[placeholder="Name"]', 'Test User');
+  await page.fill('input[placeholder="Name"]', name);
   await page.fill('input[placeholder="Email"]', email);
   await page.fill('input[placeholder="Password"]', password);
   await page.fill('input[placeholder="Confirm Password"]', password);
-  await page.fill('input[placeholder="Address"]', '123 Test Lane');
+  await page.fill('input[placeholder="Address"]', address);
   await page.click('button[type="submit"]');
   await page.waitForURL(`${appUrl}/`);
 
   // Save session + user
   await context.storageState({ path: storagePath });
-  fs.writeFileSync(userDataPath, JSON.stringify({ email, password }));
+  fs.writeFileSync(
+    userDataPath,
+    JSON.stringify({ email, password, name, address }, null, 2)
+  );
 
   await browser.close();
 }
 
 function getSessionData() {
-  const { email, password } = JSON.parse(fs.readFileSync(userDataPath, 'utf-8'));
-  return { email, password };
+  return JSON.parse(fs.readFileSync(userDataPath, 'utf-8'));
 }
 
 module.exports = {

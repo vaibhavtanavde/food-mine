@@ -30,6 +30,14 @@ test.describe('Food Page Tests', () => {
     await checkoutPage.clickFindLocation();
     await checkoutPage.clickMap();
     await checkoutPage.clickGoToPayment();
+    await checkoutPage.page.goBack();
+    
+    // checks if name and address is the same which was passed during registering process
+    const { name, address } = getSessionData();
+    const displayedName = await checkoutPage.page.inputValue('input[placeholder="Name"]');
+    const displayedAddress = await checkoutPage.page.inputValue('input[placeholder="Address"]');
+    expect(displayedName).toBe(name);
+    expect(displayedAddress).toBe(address);
     await checkoutPage.goToCartPage();
     await checkoutPage.removeItem();
     await expect(checkoutPage.page).toHaveURL(/.*cart-page/);

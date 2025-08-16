@@ -17,13 +17,12 @@ describe('Register Page Tests', () => {
   });
 
   it('should register a new user successfully', () => {
+    const name = Cypress.env('testName');
     const email = Cypress.env('testEmail');
-    registerPage.fillForm(
-      'John Doe',
-       email,
-      'password',
-      '123 Street, City'
-    );
+    const password = Cypress.env('testPassword');
+    const address = Cypress.env('testAddress');
+  
+    registerPage.fillForm(name, email, password, address);
     registerPage.submitForm();
     registerPage.verifyRedirectToHome();
   });

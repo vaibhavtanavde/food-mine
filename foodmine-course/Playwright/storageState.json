@@ -1,0 +1,18 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:4200",
+      "localStorage": [
+        {
+          "name": "User",
+          "value": "{\"id\":\"68a04f078fcd46d4d4f2bbf1\",\"email\":\"testuser_1755336453960@example.com\",\"name\":\"John Doe\",\"address\":\"123 Test Lane\",\"isAdmin\":false,\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTA0ZjA3OGZjZDQ2ZDRkNGYyYmJmMSIsImVtYWlsIjoidGVzdHVzZXJfMTc1NTMzNjQ1Mzk2MEBleGFtcGxlLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NTUzMzY0NTUsImV4cCI6MTc1NzkyODQ1NX0._U7zSoOy-sjvoovPcjQ6HzChfqs7YbrLFbBFt9efWCk\"}"
+        },
+        {
+          "name": "__paypal_storage__",
+          "value": "{\"id\":\"uid_bab709e365_mdk6mjc6mzu\",\"__session__\":{\"guid\":\"uid_df5dab70ab_mdk6mjc6mzu\",\"created\":1755336455118}}"
+        }
+      ]
+    }
+  ]
+}

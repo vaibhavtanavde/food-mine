@@ -8,7 +8,9 @@ describe('Register Page Tests', () => {
 
   it('Verify user should be able to register a new user successfully', async () => {
     const email = browser.params.testEmail;
-    await registerPage.registerUser('John Doe', email, 'password', '123 Street, City');
+    const name = browser.params.testName;
+    const address = browser.params.testAddress;
+    await registerPage.registerUser(name, email, 'password', address);
     expect(await registerPage.getCurrentUrl()).toContain('/');
   });
 });

@@ -11,12 +11,14 @@ exports.config = {
     //}
     'browserName': 'firefox',
     'moz:firefoxOptions': {
-    args: ['--headless', '--window-size=1920,1080']
+    args: ['--window-size=1920,1080']
   }
   },
 
     params: {
     testEmail: process.env.TEST_EMAIL,
+    testName: 'John Doe',
+    testAddress: '123 Street, City'
   },
 
   // Framework to use. Jasmine is recommended.
