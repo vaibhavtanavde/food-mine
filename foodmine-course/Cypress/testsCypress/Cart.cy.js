@@ -1,13 +1,14 @@
 import { CartPage } from '../pagesCypress/CartPage';
-import { LoginPage } from '../pagesCypress/LoginPage';
+import { loginWithSession } from '../utils/sessionManager';
 
-const loginPage = new LoginPage();
+
 const cartPage = new CartPage()
+
+
 describe('Cart Page Tests', () => {
 
   beforeEach(() => {
-    const email = Cypress.env('testEmail');
-    loginPage.loginSession(email, 'password');
+    loginWithSession();
   });
 
 

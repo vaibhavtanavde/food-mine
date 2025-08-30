@@ -1,6 +1,4 @@
 const { defineConfig } = require("cypress");
-// Load .env file from the parent directory
-require('dotenv').config();
 
 module.exports = defineConfig({
   e2e: {
@@ -12,15 +10,9 @@ module.exports = defineConfig({
       'foodmine-course/Cypress/testsCypress/Cart.cy.js',
       'foodmine-course/Cypress/testsCypress/Checkout.cy.js'
     ],
-    env: {
-      testEmail: process.env.TEST_EMAIL,
-      testName: 'John Doe',
-      testPassword: 'password',
-      testAddress: '123 Street, City'
-    },
     supportFile: false,
     setupNodeEvents(on, config) {
-      // You can add plugins or logging here
+      // No fs or plugins needed
       return config;
     },
   },

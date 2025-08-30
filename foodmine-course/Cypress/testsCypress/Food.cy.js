@@ -1,13 +1,12 @@
 import { FoodPage } from '../pagesCypress/FoodPage';
-import { LoginPage } from '../pagesCypress/LoginPage';
+import { loginWithSession } from '../utils/sessionManager';
 
-const loginPage = new LoginPage();
 const foodPage = new FoodPage();
+
 
 describe('Food Page Tests', () => {
   beforeEach(() => {
-    const email = Cypress.env('testEmail');
-    loginPage.loginSession(email, 'password');
+    loginWithSession();
   });
 
   it('Verify user should be able to add and then remove a food item from the cart', () => {

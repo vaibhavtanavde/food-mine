@@ -8,7 +8,7 @@ describe('Cart Page Tests', () => {
     expect(foodText).toContain('Meatball');
   });
 
-  it('Verify user should be able to change food item quantity', async () => {
+  it('Verify user should be able to add food to the cart, change food item quantity and should be able to navigate to checkout page', async () => {
     await cartPage.clickFoodImage();
     await cartPage.clickAddToCart();
     await cartPage.selectQuantity('3');
@@ -16,15 +16,10 @@ describe('Cart Page Tests', () => {
     const cartText = await cartPage.getCartCount();
     expect(cartText).toBe('3');
     expect(await browser.getCurrentUrl()).toContain('cart-page');
-  });
 
-  it('Verify user should be able to see updated price after quantity change', async () => {
     const price = await cartPage.getTotalPrice();
     expect(price).toBeTruthy(); // You can assert exact value if known
     expect(await browser.getCurrentUrl()).toContain('cart-page');
-  });
-
-  it('Verify user should be able to navigate to checkout page', async () => {
     await cartPage.clickCheckout();
     expect(await browser.getCurrentUrl()).toContain('/checkout');
   });

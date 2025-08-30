@@ -20,7 +20,7 @@ describe('Search Page Tests', () => {
     expect(currentUrl).toContain(`http://localhost:4200/search/${secondTerm}`);
   });
 
-  it('Verify user should be able to navigate to home page when clicking logo', async () => {
+   it('Verify user should navigate to home page when clicking logo', async () => {
     await searchPage.clickLogo();
     const url = await searchPage.getCurrentUrl();
     expect(url).toContain('http://localhost:4200/');

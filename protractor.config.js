@@ -1,31 +1,26 @@
-// conf.js
 require('dotenv').config();
+
 exports.config = {
   directConnect: true,
 
-  // Capabilities to be passed to the webdriver instance.
+  // Capabilities to be passed to the WebDriver instance
   capabilities: {
-    //browserName: 'chrome',
-    //  chromeOptions: {
-    //    args: ['--headless', '--window-size=1920,1080']
-    //}
-    'browserName': 'firefox',
-    'moz:firefoxOptions': {
-    args: ['--window-size=1920,1080']
-  }
+    browserName: 'chrome',
+    chromeOptions: {
+      args: ['--headless', '--window-size=1920,1080']
+    }
   },
 
-    params: {
+  params: {
     testEmail: process.env.TEST_EMAIL,
     testName: 'John Doe',
     testAddress: '123 Street, City'
   },
 
-  // Framework to use. Jasmine is recommended.
+  // Framework to use
   framework: 'jasmine',
 
-  // Spec patterns are relative to the current working directory when
-  // protractor is called.
+  // Test specifications
   specs: [
     './foodmine-course/Protractor/testsProtractor/login-page.spec.js',
     './foodmine-course/Protractor/testsProtractor/register-page.spec.js',
@@ -35,12 +30,12 @@ exports.config = {
     './foodmine-course/Protractor/testsProtractor/checkout-page.spec.js'
   ],
 
-  // Options to be passed to Jasmine.
+  // Jasmine options
   jasmineNodeOpts: {
     defaultTimeoutInterval: 60000
   },
 
-  // Add Jasmine reporter for reporting test results
+  // Reporter
   onPrepare: function() {
     var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
     jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
@@ -51,5 +46,5 @@ exports.config = {
       fixedScreenshotName: true,
       fileName: 'protractor-test-report'
     }));
-  },
+  }
 };

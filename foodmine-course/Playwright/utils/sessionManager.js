@@ -1,5 +1,5 @@
 // utils/sessionManager.js
-const { chromium } = require('@playwright/test');
+const { chromium, firefox } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 

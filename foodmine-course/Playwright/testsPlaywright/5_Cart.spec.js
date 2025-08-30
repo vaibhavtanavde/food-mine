@@ -26,7 +26,7 @@ test.describe('Cart Page Tests', () => {
     await expect(foodLocator).toContainText('Meatball');
   });
 
-  test('Verify user should be able to add food to the cart and proceed to checkout', async ({ page }) => {
+  test('Verify user should be able to add food to the cart, change food item quantity and should be able to navigate to checkout page', async ({ page }) => {
     await cartPage.clickFoodImage();
     await cartPage.clickAddToCart();
     await cartPage.selectQuantity('3');

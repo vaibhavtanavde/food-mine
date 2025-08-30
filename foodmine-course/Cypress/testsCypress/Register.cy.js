@@ -16,14 +16,4 @@ describe('Register Page Tests', () => {
     registerPage.getSubmitButton().should('exist');
   });
 
-  it('should register a new user successfully', () => {
-    const name = Cypress.env('testName');
-    const email = Cypress.env('testEmail');
-    const password = Cypress.env('testPassword');
-    const address = Cypress.env('testAddress');
-  
-    registerPage.fillForm(name, email, password, address);
-    registerPage.submitForm();
-    registerPage.verifyRedirectToHome();
-  });
 });

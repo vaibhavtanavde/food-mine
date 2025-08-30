@@ -3,6 +3,7 @@ const { ensureUserAndSession, getSessionData, storagePath } = require('../utils/
 const { LoginPage } = require('../pagesPlaywright/LoginPage');
 const { FoodPage } = require('../pagesPlaywright/FoodPage');
 
+
 test.use({ storageState: storagePath });
 
 test.describe('Food Page Tests', () => {
