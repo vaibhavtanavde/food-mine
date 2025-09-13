@@ -1,7 +1,7 @@
-// utils/sessionManager.js
-const { chromium, firefox } = require('@playwright/test');
+const { chromium, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
+const { RegisterPage } = require('../pagesPlaywright/RegisterPage');
 
 const storagePath = path.resolve(__dirname, '../storageState.json');
 const userDataPath = path.resolve(__dirname, '../test-user.json');
@@ -17,21 +17,21 @@ async function ensureUserAndSession() {
   const context = await browser.newContext();
   const page = await context.newPage();
 
+  // Use RegisterPage
+  const registerPage = new RegisterPage(page);
+
   // Generate unique email
   const email = `testuser_${Date.now()}@example.com`;
   const password = 'password';
   const name = 'John Doe';
   const address = '123 Test Lane';
 
-  // Register
-  await page.goto(`${appUrl}/register`);
-  await page.fill('input[placeholder="Name"]', name);
-  await page.fill('input[placeholder="Email"]', email);
-  await page.fill('input[placeholder="Password"]', password);
-  await page.fill('input[placeholder="Confirm Password"]', password);
-  await page.fill('input[placeholder="Address"]', address);
-  await page.click('button[type="submit"]');
-  await page.waitForURL(`${appUrl}/`);
+  // Register using RegisterPage methods
+  await registerPage.visitRegister();
+  await registerPage.fillForm(name, email, password, address);
+  await registerPage.submitForm();
+  await registerPage.successMessage();
+  await registerPage.verifyRedirectToHome();
 
   // Save session + user
   await context.storageState({ path: storagePath });

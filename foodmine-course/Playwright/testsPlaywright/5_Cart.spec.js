@@ -13,7 +13,6 @@ test.describe('Cart Page Tests', () => {
     await ensureUserAndSession(); // register + store session (only once)
   });
 
-  
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     cartPage = new CartPage(page);

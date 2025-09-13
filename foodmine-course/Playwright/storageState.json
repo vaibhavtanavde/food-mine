@@ -6,11 +6,11 @@
       "localStorage": [
         {
           "name": "User",
-          "value": "{\"id\":\"68a04f078fcd46d4d4f2bbf1\",\"email\":\"testuser_1755336453960@example.com\",\"name\":\"John Doe\",\"address\":\"123 Test Lane\",\"isAdmin\":false,\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTA0ZjA3OGZjZDQ2ZDRkNGYyYmJmMSIsImVtYWlsIjoidGVzdHVzZXJfMTc1NTMzNjQ1Mzk2MEBleGFtcGxlLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NTUzMzY0NTUsImV4cCI6MTc1NzkyODQ1NX0._U7zSoOy-sjvoovPcjQ6HzChfqs7YbrLFbBFt9efWCk\"}"
+          "value": "{\"id\":\"68bbf44bddcdcd8f8a0881cc\",\"email\":\"testuser_1757148232304@example.com\",\"name\":\"John Doe\",\"address\":\"123 Test Lane\",\"isAdmin\":false,\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YmJmNDRiZGRjZGNkOGY4YTA4ODFjYyIsImVtYWlsIjoidGVzdHVzZXJfMTc1NzE0ODIzMjMwNEBleGFtcGxlLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NTcxNDgyMzUsImV4cCI6MTc1OTc0MDIzNX0.L3WpGJ4oQ-A3r2cK9-J9K_5zcCC3uLbQL_EaF1YFgwk\"}"
         },
         {
           "name": "__paypal_storage__",
-          "value": "{\"id\":\"uid_bab709e365_mdk6mjc6mzu\",\"__session__\":{\"guid\":\"uid_df5dab70ab_mdk6mjc6mzu\",\"created\":1755336455118}}"
+          "value": "{\"id\":\"uid_8efaf8b103_mdg6ndm6ntq\",\"__session__\":{\"guid\":\"uid_608f791660_mdg6ndm6ntq\",\"created\":1757148234065}}"
         }
       ]
     }

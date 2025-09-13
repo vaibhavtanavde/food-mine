@@ -1,3 +1,4 @@
+const { expect } = require('@playwright/test');
 export class RegisterPage {
   constructor(page) {
     this.page = page;
@@ -7,6 +8,7 @@ export class RegisterPage {
     this.confirmPasswordInput = 'input[placeholder="Confirm Password"]';
     this.addressInput = 'input[placeholder="Address"]';
     this.submitButton = 'button[type="submit"]';
+    this.successToast = 'div[aria-label="Register Successful"]'
   }
 
   async visitRegister() {
@@ -28,4 +30,9 @@ export class RegisterPage {
   async verifyRedirectToHome() {
     await this.page.waitForURL('http://localhost:4200/');
   }
+
+async successMessage() {
+    const toast = this.page.locator(this.successToast);
+    await expect(toast).toBeVisible({ timeout: 10000 });
+}
 }

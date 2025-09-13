@@ -21,6 +21,7 @@ function createAndRegisterUser() {
   registerPage.visitRegister();
   registerPage.fillForm(user.name, user.email, user.password, user.address);
   registerPage.submitForm();
+  registerPage.verifySuccessToast();
   registerPage.verifyRedirectToHome();
 
   // Store in Cypress.env for later use

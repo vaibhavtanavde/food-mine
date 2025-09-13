@@ -8,6 +8,7 @@ class RegisterPage {
     this.confirmPasswordInput = element(by.css('input[placeholder="Confirm Password"]'));
     this.addressInput = element(by.css('input[placeholder="Address"]'));
     this.submitButton = element(by.css('button[type="submit"]'));
+    this.successmessage = element(by.css('div[aria-label="Register Successful"]'));
   }
 
   async isFormDisplayed() {
@@ -30,8 +31,10 @@ class RegisterPage {
     await this.submitButton.click();
   }
 
-  async getCurrentUrl() {
-    return await browser.getCurrentUrl();
+  async sucessToast() {
+  const EC = protractor.ExpectedConditions;
+  await browser.wait(EC.visibilityOf(this.successmessage), 10000);
+  return await this.successmessage.isDisplayed();
   }
 }
 

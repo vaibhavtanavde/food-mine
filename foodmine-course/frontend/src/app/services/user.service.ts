@@ -49,7 +49,7 @@ export class UserService {
           this.userSubject.next(user);
           this.toastrService.success(
             `Welcome to the Foodmine ${user.name}`,
-            'Register Successful'
+            'Register Successful',
           )
         },
         error: (errorResponse) => {

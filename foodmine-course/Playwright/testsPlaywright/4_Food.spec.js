@@ -14,8 +14,6 @@ test.describe('Food Page Tests', () => {
     await ensureUserAndSession(); // register + store session (only once)
   });
 
-  
-
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     foodPage = new FoodPage(page);

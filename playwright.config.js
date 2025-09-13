@@ -12,7 +12,6 @@ export default defineConfig({
   workers: 1, // 👈 If you want full parallelism, consider increasing this (optional)
   use: {
     baseURL: 'http://localhost:4200',
-    headless: true,
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
     screenshot: 'only-on-failure',

@@ -8,6 +8,7 @@ class LoginPage {
 
   async navigateToHome() {
     await browser.get('http://localhost:4200');
+    //debugger;
     await browser.manage().window().maximize();
   }
 

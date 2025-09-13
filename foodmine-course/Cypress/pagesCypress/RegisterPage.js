@@ -42,4 +42,8 @@ fillForm(name, email, password, address) {
   verifyRedirectToHome() {
     cy.url().should('eq', 'http://localhost:4200/');
   }
+
+  verifySuccessToast() {
+    cy.get('div[aria-label="Register Successful"]', { timeout: 10000 }).should('be.visible')
+  }
 }

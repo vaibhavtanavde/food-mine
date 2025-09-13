@@ -1,6 +1,7 @@
 export class LoginPage {
   visitHome() {
     cy.visit('http://localhost:4200');
+    cy.pause()
   }
 
   clickLogin() {

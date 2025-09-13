@@ -7,7 +7,7 @@ exports.config = {
   capabilities: {
     browserName: 'chrome',
     chromeOptions: {
-      args: ['--headless', '--window-size=1920,1080']
+      args: ['--headed','--window-size=1920,1080']
     }
   },
 
@@ -27,7 +27,7 @@ exports.config = {
     './foodmine-course/Protractor/testsProtractor/search-page.spec.js',
     './foodmine-course/Protractor/testsProtractor/food-page.spec.js',
     './foodmine-course/Protractor/testsProtractor/cart-page.spec.js',
-    './foodmine-course/Protractor/testsProtractor/checkout-page.spec.js'
+    './foodmine-course/Protractor/testsProtractor/checkout-page.spec.js' 
   ],
 
   // Jasmine options
@@ -37,9 +37,11 @@ exports.config = {
 
   // Reporter
   onPrepare: function() {
+    //browser.waitForAngularEnabled(false);
     var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
     jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
       savePath: 'test-reports',
+      cleanDestination: false,
       screenshotsFolder: 'images',
       takeScreenshots: true,
       takeScreenshotsOnlyOnFailures: true,
